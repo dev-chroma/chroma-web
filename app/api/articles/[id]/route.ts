@@ -179,12 +179,10 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  {
-    params,
-  }: {
-    params: {
+  context: {
+    params: Promise<{
       id: string;
-    };
+    }>;
   },
 ) {
   try {
@@ -196,7 +194,9 @@ export async function DELETE(
       return auth.error;
     }
 
-    const article = await Article.findById(params.id);
+    const { id } = await context.params;
+
+    const article = await Article.findById(id);
 
     if (!article) {
       return NextResponse.json(
@@ -223,7 +223,7 @@ export async function DELETE(
       );
     }
 
-    await Article.findByIdAndUpdate(params.id, {
+    await Article.findByIdAndUpdate(id, {
       deletedAt: new Date(),
       status: "Draft",
     });
