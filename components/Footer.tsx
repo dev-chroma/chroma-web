@@ -19,14 +19,16 @@ const Footer = () => {
           {/* BRAND */}
 
           <div className="space-y-8">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo-white.png"
-                alt="Chroma Diaries"
-                className="h-12 md:h-16 w-auto object-contain"
-                fill
-              />
-            </Link>
+            <div className="relative h-12 md:h-16 w-40">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/logo-white.png"
+                  alt="Chroma Diaries"
+                  className="object-contain"
+                  fill
+                />
+              </Link>
+            </div>
 
             <p className="text-cream-50/50 text-sm leading-relaxed max-w-xs font-medium">
               A creative sanctuary for writers under 18. Fostering the next

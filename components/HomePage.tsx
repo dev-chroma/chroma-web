@@ -15,16 +15,20 @@ import type {
 } from "@/types/article";
 import ArticleCard from "@/components/ArticleCard";
 import Sidebar from "@/components/Sidebar";
+import HomeSkeleton from "@/components/skeletons/HomeSkeleton";
 
 const HomePage = () => {
   const searchParams = useSearchParams();
   const categoryFilter = searchParams.get("category");
   const [articles, setArticles] = useState<PublicArticle[]>([]);
   const [trendingArticles, setTrendingArticles] = useState<PublicArticle[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
+        setLoading(true);
+
         const params: ArticleQueryParams = {
           status: "Published",
         };
@@ -38,6 +42,8 @@ const HomePage = () => {
         setArticles(data.articles || []);
       } catch (error) {
         console.error("Failed to fetch articles:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -63,6 +69,10 @@ const HomePage = () => {
 
     fetchTrending();
   }, []);
+
+  if (loading) {
+    return <HomeSkeleton />;
+  }
 
   if (articles.length === 0) {
     return (

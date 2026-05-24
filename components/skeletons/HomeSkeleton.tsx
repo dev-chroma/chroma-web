@@ -79,7 +79,7 @@ const HomeSkeleton = () => {
       <main className="container mx-auto px-4 py-12 md:py-8">
         {/* ── HERO ── */}
         <div className="mb-24 md:mb-32">
-          <div className="h-[460px] md:h-[520px] rounded-[3.5rem] sk-dark" />
+          <div className="h-115 md:h-130 rounded-[3.5rem] sk-dark" />
         </div>
 
         <div className="flex flex-col lg:flex-row gap-20 xl:gap-32">
@@ -96,11 +96,11 @@ const HomeSkeleton = () => {
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="sk-card rounded-[2.5rem] overflow-hidden border border-emerald-950/[0.05] bg-white"
+                  className="sk-card rounded-[2.5rem] overflow-hidden border border-emerald-950/5 bg-white"
                 >
                   {/* Thumbnail */}
-                  <div className="relative aspect-[16/11] sk">
-                    <div className="absolute top-5 left-5 h-6 w-20 rounded-full bg-emerald-950/[0.06]" />
+                  <div className="relative aspect-16/11 sk">
+                    <div className="absolute top-5 left-5 h-6 w-20 rounded-full bg-emerald-950/6" />
                   </div>
 
                   {/* Body */}
@@ -126,7 +126,7 @@ const HomeSkeleton = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="pt-6 border-t border-emerald-950/[0.05] flex items-center justify-between">
+                    <div className="pt-6 border-t border-emerald-950/5 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full sk" />
                         <div className="space-y-2">
@@ -153,7 +153,7 @@ const HomeSkeleton = () => {
           {/* ── SIDEBAR ── */}
           <div className="lg:w-1/3 space-y-10">
             {/* Trending block */}
-            <div className="bg-white rounded-[2.5rem] p-8 border border-emerald-950/[0.05]">
+            <div className="bg-white rounded-[2.5rem] p-8 border border-emerald-950/5">
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-11 h-11 rounded-2xl sk" />
                 <div className="h-4 w-32 rounded-full sk" />
@@ -175,7 +175,7 @@ const HomeSkeleton = () => {
             {/* Newsletter / CTA block */}
             <div className="rounded-[3rem] p-10 sk-dark">
               <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-[1.5rem] sk mb-8" />
+                <div className="w-16 h-16 rounded-3xl sk mb-8" />
                 <div className="h-6 w-48 rounded-xl sk mb-4" />
                 <div className="space-y-2.5 w-full mb-10">
                   <div className="h-3 w-full rounded-full sk" />
