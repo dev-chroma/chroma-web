@@ -93,6 +93,13 @@ export async function GET(req: Request) {
 
       if (foundCategory) {
         query.category = foundCategory._id;
+      } else {
+        return NextResponse.json({
+          articles: [],
+          totalPages: 0,
+          currentPage: page,
+          totalArticles: 0,
+        });
       }
     }
 

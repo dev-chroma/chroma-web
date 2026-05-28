@@ -1,25 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --color-emerald-950: #423d3d; /* Text and dark backgrounds */
-  --color-emerald-900: #423d3d;
-  --color-emerald-800: #726f6f;
-  --color-emerald-700: #726f6f;
-  --color-emerald-600: #9ca97f; /* Main logo color */
-  --color-emerald-500: #9ca97f;
-  --color-emerald-400: #9ca97f;
-  --color-emerald-100: #eef2e6;
-  --color-emerald-50: #f4f6f0;
+  /* Deep Royal Blues */
+  --color-emerald-950: #0f172f;
+  --color-emerald-900: #162454;
+  --color-emerald-800: #1f3575;
+  --color-emerald-700: #2c4ea3;
 
-  --color-brand-main: #9ca97f;
-  --color-brand-accent: #726f6f;
-  --color-brand-dark: #423d3d;
+  /* Dark Green Accent */
+  --color-emerald-600: #3d5a40;
+  --color-emerald-500: #4d7350;
+  --color-emerald-400: #6b8f6d;
 
-  --color-cream-50: #fbfbf9;
-  --color-charcoal: #423d3d;
+  /* Soft Background Shades */
+  --color-emerald-100: #e8ecff;
+  --color-emerald-50: #f4f6ff;
 
+  /* Brand Colors */
+  --color-brand-main: #2c4ea3;
+  --color-brand-accent: #3d5a40;
+  --color-brand-dark: #0f172f;
+
+  /* Neutral Colors */
+  --color-cream-50: #f8f9fc;
+  --color-charcoal: #0b1020;
+
+  /* Typography */
   --font-serif: "Playfair Display", serif;
-  --font-sans: Inter, sans-serif;
+  --font-sans: "Poppins", Inter, sans-serif;
 }
 
 :root {
