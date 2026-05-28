@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, models } from "mongoose";
 
 export interface INewsletter extends Document {
   email: string;
@@ -11,4 +11,6 @@ const newsletterSchema = new Schema<INewsletter>(
   { timestamps: true },
 );
 
-export default model<INewsletter>("Newsletter", newsletterSchema);
+const Newsletter =
+  models.Newsletter || model<INewsletter>("Newsletter", newsletterSchema);
+export default Newsletter;

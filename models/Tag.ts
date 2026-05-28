@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, models } from "mongoose";
 
 export interface ITag extends Document {
   name: string;
@@ -11,4 +11,5 @@ const tagSchema = new Schema<ITag>(
   { timestamps: true },
 );
 
-export default model<ITag>("Tag", tagSchema);
+const Tag = models.Tag || model<ITag>("Tag", tagSchema);
+export default Tag;

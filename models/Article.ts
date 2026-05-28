@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Document, Types, models } from "mongoose";
 
 export interface IArticle extends Document {
   title: string;
@@ -58,4 +58,5 @@ articleSchema.index({ deletedAt: 1 }, { expireAfterSeconds: 604800 });
 // Index for search
 articleSchema.index({ title: "text", content: "text", tags: "text" });
 
-export default model<IArticle>("Article", articleSchema);
+const Article = models.Article || model<IArticle>("Article", articleSchema);
+export default Article;

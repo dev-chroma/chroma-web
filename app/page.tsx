@@ -1,11 +1,19 @@
 import { Suspense } from "react";
+
 import HomePage from "@/components/HomePage";
+
 import HomeSkeleton from "@/components/skeletons/HomeSkeleton";
 
-export default function Page() {
+interface PageProps {
+  searchParams: Promise<{
+    category?: string;
+  }>;
+}
+
+export default async function Page({ searchParams }: PageProps) {
   return (
     <Suspense fallback={<HomeSkeleton />}>
-      <HomePage />
+      <HomePage searchParams={searchParams} />
     </Suspense>
   );
 }
