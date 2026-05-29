@@ -15,11 +15,17 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
   const router = useRouter();
   const { user } = useAuth();
   const [likes, setLikes] = useState(article.likes || 0);
-  const [isLiked, setIsLiked] = useState(
-    article.likedBy?.includes(user?._id || "") || false,
-  );
+  const serverLiked =
+    article.likedBy?.some((id) => String(id) === String(user?._id)) || false;
 
+  const [optimisticLiked, setOptimisticLiked] = useState<boolean | null>(null);
+
+  const isLiked = optimisticLiked === null ? serverLiked : optimisticLiked;
   const [isLiking, setIsLiking] = useState(false);
+
+  console.log("USER ID:", user?._id);
+  console.log("LIKED BY:", article.likedBy);
+
   const handleLike = async () => {
     if (isLiking) {
       return;
@@ -34,10 +40,10 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
       const previousLiked = isLiked;
 
       // optimistic update
-      setIsLiked(!previousLiked);
+      setOptimisticLiked(!previousLiked);
       setLikes((prev) => (previousLiked ? Math.max(prev - 1, 0) : prev + 1));
       const updated = await api.articles.like(article._id);
-      setIsLiked(updated.liked);
+      setOptimisticLiked(updated.liked);
       if (updated?.likes !== undefined) {
         setLikes(updated.likes);
       }

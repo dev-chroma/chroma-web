@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Loader, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
@@ -62,9 +62,17 @@ const CommentForm = ({ articleId }: CommentFormProps) => {
           disabled={isSubmitting || !content.trim()}
           className="flex items-center gap-3 px-8 py-3 bg-emerald-950 text-cream-50 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] disabled:opacity-50"
         >
-          <Send className="w-4 h-4" />
-
-          {isSubmitting ? "Posting..." : "Post"}
+          {isSubmitting ? (
+            <>
+              <Loader className="w-4 h-4 animate-spin" />
+              Posting...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              Post
+            </>
+          )}
         </button>
       </div>
     </form>

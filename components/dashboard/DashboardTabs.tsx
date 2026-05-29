@@ -17,6 +17,7 @@ import type { DashboardTab, AdminStats } from "@/types/dashboard";
 import type { PublicArticle } from "@/types/article";
 import SearchBar from "./SearchBar";
 import ModerationActions from "./ModerationActions";
+import Image from "next/image";
 const AdminArticleManagement = dynamic(
   () => import("@/components/dashboard/AdminArticleManagment"),
 );
@@ -310,10 +311,12 @@ export default function DashboardTabs({
                           <td className="px-12 py-10">
                             <div className="flex items-center gap-6">
                               <div className="w-16 h-16 rounded-2xl bg-emerald-950/5 overflow-hidden shadow-sm group-hover:shadow-md transition-all">
-                                <img
-                                  src={article.thumbnail}
-                                  alt={article.title}
+                                <Image
+                                  src={article.thumbnail as string}
+                                  alt={article.title as string}
                                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                  width={64}
+                                  height={64}
                                 />
                               </div>
                               <span className="font-serif font-bold text-xl text-emerald-950 group-hover:text-emerald-700 transition-colors">

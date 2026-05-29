@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { api } from "@/services/api";
 
 import type { PublicUser, UserRole } from "@/types/user";
+import { Loader } from "lucide-react";
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState<PublicUser[]>([]);
@@ -38,7 +39,12 @@ const AdminUserManagement = () => {
     }
   };
 
-  if (loading) return <div>Loading users...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center p-20">
+        <Loader className="w-8 h-8 animate-spin text-emerald-950/20" />
+      </div>
+    );
 
   return (
     <div className="bg-white rounded-[3rem] border border-emerald-950/5 shadow-2xl overflow-hidden">

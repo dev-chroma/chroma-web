@@ -1,33 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* Deep Royal Blues */
-  --color-emerald-950: #0f172f;
-  --color-emerald-900: #162454;
-  --color-emerald-800: #1f3575;
-  --color-emerald-700: #2c4ea3;
+  /* Main Blues */
+  --color-emerald-950: #1e2f75;
+  --color-emerald-900: #2947a5;
+  --color-emerald-800: #3d63d6;
+  --color-emerald-700: #5a7df0;
 
-  /* Dark Green Accent */
-  --color-emerald-600: #3d5a40;
-  --color-emerald-500: #4d7350;
-  --color-emerald-400: #6b8f6d;
+  /* Blue Accents (replacing green) */
+  --color-emerald-600: #7ea0ff;
+  --color-emerald-500: #97b2ff;
+  --color-emerald-400: #b7c8ff;
 
-  /* Soft Background Shades */
-  --color-emerald-100: #e8ecff;
-  --color-emerald-50: #f4f6ff;
+  /* Light Background Blues */
+  --color-emerald-100: #eef3ff;
+  --color-emerald-50: #f8faff;
 
   /* Brand Colors */
-  --color-brand-main: #2c4ea3;
-  --color-brand-accent: #3d5a40;
-  --color-brand-dark: #0f172f;
+  --color-brand-main: #3d63d6;
+  --color-brand-accent: #7ea0ff;
+  --color-brand-dark: #1e2f75;
 
-  /* Neutral Colors */
-  --color-cream-50: #f8f9fc;
-  --color-charcoal: #0b1020;
+  /* Neutrals */
+  --color-cream-50: #fafcff;
+  --color-charcoal: #1c2340;
 
   /* Typography */
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Poppins", Inter, sans-serif;
+  --font-serif: var(--font-playfair), serif;
+  --font-sans: var(--font-inter), sans-serif;
 }
 
 :root {

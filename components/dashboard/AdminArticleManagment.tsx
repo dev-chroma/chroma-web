@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { DashboardArticle } from "@/types/dashboard";
-
 import { api } from "@/services/api";
 
 import AdminArticleSearch from "./AdminArticleSearch";
 import AdminArticleActions from "./AdminArticleActions";
+import { Loader } from "lucide-react";
+import Image from "next/image";
 
 interface AdminArticleManagementProps {
   search?: string;
@@ -50,12 +50,8 @@ export default function AdminArticleManagement({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-[3rem] border border-emerald-950/5 shadow-2xl p-16 text-center">
-        <div className="w-12 h-12 border-4 border-emerald-950/10 border-t-emerald-950 rounded-full animate-spin mx-auto mb-6" />
-
-        <p className="text-sm font-bold uppercase tracking-widest text-emerald-950/40">
-          Loading Articles...
-        </p>
+      <div className="flex items-center justify-center p-20">
+        <Loader className="w-8 h-8 animate-spin text-emerald-950/20" />
       </div>
     );
   }
@@ -94,8 +90,22 @@ export default function AdminArticleManagement({
                 key={article._id}
                 className="hover:bg-emerald-950/1 transition-all"
               >
-                <td className="px-12 py-8 font-serif font-bold text-emerald-950">
-                  {article.title}
+                <td className="px-12 py-8">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-emerald-950/5 relative flex-shrink-0">
+                      <Image
+                        src={article.thumbnail || "/placeholder.jpg"}
+                        alt={article.title}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                      />
+                    </div>
+
+                    <span className="font-serif font-bold text-lg text-emerald-950">
+                      {article.title}
+                    </span>
+                  </div>
                 </td>
 
                 <td className="px-12 py-8 text-sm text-emerald-950/60">
@@ -121,6 +131,23 @@ export default function AdminArticleManagement({
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* FOOTER */}
+      <div className="p-10 md:p-12 bg-emerald-950/2 flex justify-between items-center border-t border-emerald-950/5">
+        <p className="text-[10px] uppercase tracking-widest font-bold text-emerald-950/30">
+          Showing all records
+        </p>
+
+        <div className="flex gap-2">
+          <button className="w-10 h-10 rounded-xl bg-white border border-emerald-950/5 flex items-center justify-center text-emerald-950 font-bold shadow-sm">
+            1
+          </button>
+
+          <button className="w-10 h-10 rounded-xl hover:bg-white transition-all flex items-center justify-center text-emerald-950/20 font-bold hover:shadow-sm">
+            2
+          </button>
+        </div>
       </div>
     </div>
   );

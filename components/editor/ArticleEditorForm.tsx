@@ -94,7 +94,7 @@ export default function ArticleEditorForm({
 
   return (
     <div className="min-h-screen bg-cream-50 py-24">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4">
         {/* HEADER */}
 
         <header className="mb-16">

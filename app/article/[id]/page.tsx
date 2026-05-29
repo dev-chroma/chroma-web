@@ -29,9 +29,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const { id } = await params;
 
   const article = await Article.findById(id)
-    .populate("author", "firstName surname avatar")
+    .populate("author", "firstName surname avatar school")
     .populate("category", "name slug")
     .lean();
+
+  console.log(article.likedBy);
 
   if (!article) {
     notFound();
@@ -62,7 +64,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       $exists: false,
     },
   })
-    .populate("author", "firstName surname avatar")
+    .populate("author", "firstName surname avatar school")
     .limit(3)
     .lean();
 
@@ -78,9 +80,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <div className="bg-cream-50 min-h-screen pb-32">
-      <header className="relative pt-8 pb-8 md:pt-12 overflow-hidden border-b border-emerald-950/5">
+      <header className="relative pt-8 pb-8 md:pt-12 overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-4">
+          <div className="mx-auto text-center space-y-4">
             <div className="flex justify-center items-center gap-4">
               <span className="px-5 py-2 bg-emerald-950 text-cream-50 rounded-full text-[10px] font-bold uppercase tracking-[0.2em]">
                 {serializedArticle.category?.name}
@@ -93,11 +95,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-7xl font-serif font-bold text-emerald-950 leading-[1.1] tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight text-emerald-950 tracking-tight">
               {serializedArticle.title}
             </h1>
 
-            <p className="text-xl md:text-2xl text-emerald-950/60 font-medium italic max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-emerald-950/60 font-medium italic max-w-3xl mx-auto">
               &quot;{serializedArticle.excerpt}&quot;
             </p>
           </div>
@@ -105,7 +107,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </header>
 
       <div className="container mx-auto px-4 relative z-20">
-        <div className="max-w-6xl mx-auto rounded-[3rem] overflow-hidden shadow-2xl aspect-21/9 border-8 border-white relative">
+        <div className="mx-auto rounded-4xl overflow-hidden aspect-16/7 relative">
           <Image
             src={serializedArticle.thumbnail || "/placeholder.jpg"}
             alt={serializedArticle.title}
@@ -116,18 +118,88 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 mt-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="prose prose-emerald prose-xl max-w-none">
-            {serializedArticle.content
-              .split(/\n+/)
-              .filter((p) => p.trim())
-              .map((paragraph, idx) => (
-                <p key={idx}>{paragraph}</p>
-              ))}
-          </div>
+      <div className="container mx-auto px-4 mt-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-16">
+            <aside className="lg:sticky lg:top-24 h-fit">
+              <div className="space-y-8">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-emerald-950/40 mb-4">
+                    Contributor
+                  </p>
 
-          <ArticleActions article={serializedArticle} />
+                  <Link
+                    href={`/profile/${serializedArticle.author._id}`}
+                    className="flex items-center gap-3 group hover:bg-emerald-950/5 rounded-lg p-2 transition-colors"
+                  >
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-emerald-950/5 relative">
+                      {serializedArticle.author.avatar ? (
+                        <Image
+                          src={serializedArticle.author.avatar}
+                          alt={serializedArticle.author.firstName}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          {serializedArticle.author.firstName[0]}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-emerald-950">
+                        {serializedArticle.author.firstName}{" "}
+                        {serializedArticle.author.surname}
+                      </p>
+
+                      <p className="text-sm text-emerald-950/40 truncate max-w-35">
+                        {serializedArticle.author.school}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+
+                <hr className="border-emerald-950/10" />
+
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-emerald-950/40 mb-3">
+                    Reading Time
+                  </p>
+
+                  <div className="flex items-center gap-2 text-sm text-emerald-950/70">
+                    <Clock className="w-4 h-4" />
+                    {serializedArticle.readTime}
+                  </div>
+                </div>
+
+                <hr className="border-emerald-950/10" />
+
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-emerald-950/40 mb-3">
+                    Category
+                  </p>
+
+                  <p className="text-sm text-emerald-950">
+                    {serializedArticle.category?.name}
+                  </p>
+                </div>
+              </div>
+            </aside>
+
+            <article>
+              <div className="prose prose-lg max-w-none prose-headings:font-serif prose-p:text-emerald-950/80 prose-p:leading-loose">
+                {serializedArticle.content
+                  .split(/\n+/)
+                  .filter((p) => p.trim())
+                  .map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))}
+              </div>
+
+              <ArticleActions article={serializedArticle} />
+            </article>
+          </div>
 
           <div className="mt-24 space-y-12">
             <h3 className="text-2xl font-serif font-bold text-emerald-950">
@@ -148,7 +220,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                       {comment.author.firstName} {comment.author.surname}
                     </h4>
 
-                    <p className="text-emerald-950/70 mt-2">
+                    <p className="text-emerald-950/70 mt-2 max-w-2xl">
                       {comment.content}
                     </p>
                   </div>

@@ -1,32 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { Tag, Plus, Loader2, Pencil, Trash2, Check, X } from "lucide-react";
-
+import { Tag, Plus, Loader, Pencil, Trash2, Check, X } from "lucide-react";
 import { api } from "@/services/api";
-
 import type { Category } from "@/types/category";
 
 const AdminCategoryManagement = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-
   const [newCategoryName, setNewCategoryName] = useState("");
-
   const [loading, setLoading] = useState(true);
-
   const [creating, setCreating] = useState(false);
-
   const [error, setError] = useState("");
-
   const [editingId, setEditingId] = useState<string | null>(null);
-
   const [editName, setEditName] = useState("");
 
   const fetchCategories = async () => {
     try {
       const data = await api.categories.list();
-
       setCategories(data.categories || []);
     } catch (error) {
       console.error(error);
@@ -47,16 +37,13 @@ const AdminCategoryManagement = () => {
     e.preventDefault();
 
     if (!newCategoryName.trim()) return;
-
     try {
       setCreating(true);
-
       await api.categories.create({
         name: newCategoryName,
       });
 
       setNewCategoryName("");
-
       fetchCategories();
     } catch (error) {
       setError(
@@ -69,12 +56,10 @@ const AdminCategoryManagement = () => {
 
   const handleDelete = async (id: string) => {
     const confirmed = window.confirm("Delete this category?");
-
     if (!confirmed) return;
 
     try {
       await api.categories.delete(id);
-
       setCategories((prev) => prev.filter((category) => category._id !== id));
     } catch (error) {
       console.error(error);
@@ -83,7 +68,6 @@ const AdminCategoryManagement = () => {
 
   const handleEdit = (category: Category) => {
     setEditingId(category._id);
-
     setEditName(category.name);
   };
 
@@ -106,7 +90,7 @@ const AdminCategoryManagement = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-20">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-950/20" />
+        <Loader className="w-8 h-8 animate-spin text-emerald-950/20" />
       </div>
     );
   }
@@ -114,10 +98,8 @@ const AdminCategoryManagement = () => {
   return (
     <div className="space-y-8">
       {/* CREATE */}
-
       <div className="bg-white p-10 rounded-[3rem] border border-emerald-950/5 shadow-2xl">
         <h2 className="text-2xl font-serif font-bold mb-8">Create Category</h2>
-
         <form onSubmit={handleAddCategory} className="flex gap-4">
           <input
             type="text"
@@ -133,7 +115,7 @@ const AdminCategoryManagement = () => {
             className="px-10 py-5 bg-emerald-950 text-cream-50 rounded-2xl font-bold text-[10px] tracking-[0.2em] uppercase hover:bg-emerald-900 transition-all shadow-xl shadow-emerald-950/20 flex items-center justify-center gap-4 disabled:opacity-50 active:scale-95"
           >
             {creating ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader className="w-4 h-4 animate-spin" />
             ) : (
               <Plus className="w-4 h-4" />
             )}

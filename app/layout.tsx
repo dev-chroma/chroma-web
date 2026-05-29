@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Inter, Playfair_Display } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+export const playfair = Playfair_Display({
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "700"],
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col selection:bg-emerald-600 selection:text-cream-50">
         <AuthProvider>

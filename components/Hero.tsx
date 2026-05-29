@@ -115,11 +115,11 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-serif font-bold mb-6 max-w-4xl leading-none tracking-tight text-white">
+          <h1 className="text-4xl md:text-7xl font-serif font-bold mb-6 max-w-4xl leading-none line-clamp-1 truncate tracking-tight text-white">
             {article.title}
           </h1>
 
-          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl line-clamp-2 md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
+          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
             {article.excerpt}
           </p>
 

@@ -8,7 +8,7 @@ const ContactPage = () => {
   return (
     <div className="bg-cream-50 min-h-screen">
       <div className="container mx-auto px-4 py-12 md:py-24">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto">
           {/* HEADER */}
 
           <div className="mb-12 md:mb-20">
