@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   Clock,
   Heart,
+  User,
 } from "lucide-react";
 import type { DashboardTab, AdminStats } from "@/types/dashboard";
 import type { PublicArticle } from "@/types/article";
@@ -91,13 +92,23 @@ export default function DashboardTabs({
             </p>
           </div>
 
-          <Link
-            href="/submit-piece"
-            className="flex items-center justify-center gap-4 px-10 py-5 bg-emerald-950 text-cream-50 rounded-full font-bold text-xs tracking-[0.2em] hover:bg-emerald-900 transition-all shadow-2xl shadow-emerald-950/40 group active:scale-95"
-          >
-            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
-            SUBMIT NEW PIECE
-          </Link>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href={`/profile/${user._id}`}
+              className="flex items-center justify-center gap-4 px-10 py-5 bg-emerald-950/10 text-emerald-950 rounded-full font-bold text-xs tracking-[0.2em] hover:bg-emerald-950/15 transition-all shadow-xl shadow-emerald-950/10 group active:scale-95"
+            >
+              <User className="w-5 h-5" />
+              VIEW PROFILE
+            </Link>
+
+            <Link
+              href="/submit-piece"
+              className="flex items-center justify-center gap-4 px-10 py-5 bg-emerald-950 text-cream-50 rounded-full font-bold text-xs tracking-[0.2em] hover:bg-emerald-900 transition-all shadow-2xl shadow-emerald-950/40 group active:scale-95"
+            >
+              <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
+              SUBMIT NEW PIECE
+            </Link>
+          </div>
         </div>
 
         {/* TABS */}

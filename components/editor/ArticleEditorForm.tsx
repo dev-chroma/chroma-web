@@ -25,6 +25,7 @@ interface FormDataState {
   body: string;
   category: string;
   thumbnail: string;
+  thumbnailPublicId: string;
 }
 
 export default function ArticleEditorForm({
@@ -34,6 +35,7 @@ export default function ArticleEditorForm({
 }: ArticleEditorFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState<FormDataState>({
     title: article?.title || "",
@@ -41,27 +43,99 @@ export default function ArticleEditorForm({
     body: article?.content || "",
     category: article?.category?._id || "",
     thumbnail: article?.thumbnail || "",
+    thumbnailPublicId: "",
   });
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (!file) {
       return;
     }
+
     if (file.size > 5 * 1024 * 1024) {
       setError("Image must be less than 5MB");
-
       return;
     }
-    const reader = new FileReader();
-    reader.onloadend = () => {
+
+    const previewUrl = URL.createObjectURL(file);
+
+    URL.revokeObjectURL(previewUrl);
+
+    setFormData((prev) => ({
+      ...prev,
+      thumbnail: previewUrl,
+    }));
+
+    try {
+      setImageUploading(true);
+
+      // delete old image first
+      if (formData.thumbnailPublicId) {
+        await fetch("/api/upload/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            publicId: formData.thumbnailPublicId,
+          }),
+        });
+      }
+
+      const uploadData = new FormData();
+
+      uploadData.append("thumbnail", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
       setFormData((prev) => ({
         ...prev,
-        thumbnail: reader.result as string,
+        thumbnail: data.url,
+        thumbnailPublicId: data.publicId,
       }));
-    };
+    } catch (error) {
+      console.error(error);
 
-    reader.readAsDataURL(file);
+      setError(error instanceof Error ? error.message : "Upload failed");
+    } finally {
+      setImageUploading(false);
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    try {
+      setImageUploading(true);
+
+      if (formData.thumbnailPublicId) {
+        await fetch("/api/upload/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            publicId: formData.thumbnailPublicId,
+          }),
+        });
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        thumbnail: "",
+        thumbnailPublicId: "",
+      }));
+    } finally {
+      setImageUploading(false);
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -82,8 +156,7 @@ export default function ArticleEditorForm({
       } else {
         await api.articles.create(payload as CreateArticlePayload);
       }
-      router.push("/dashboard");
-      router.refresh();
+      router.replace("/dashboard");
     } catch (error) {
       console.error(error);
       setError(error instanceof Error ? error.message : "Submission failed");
@@ -243,6 +316,17 @@ export default function ArticleEditorForm({
                   className="object-cover"
                 />
 
+                {/*Loading */}
+                {imageUploading && (
+                  <div className="absolute inset-0 z-50 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+
+                    <p className="mt-4 text-white text-xs font-bold uppercase tracking-[0.3em]">
+                      Uploading...
+                    </p>
+                  </div>
+                )}
+
                 {/* OVERLAY */}
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
@@ -264,13 +348,7 @@ export default function ArticleEditorForm({
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-
-                      thumbnail: "",
-                    }))
-                  }
+                  onClick={handleRemoveImage}
                   className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md text-white hover:bg-red-500 transition-all flex items-center justify-center"
                 >
                   <X className="w-5 h-5" />

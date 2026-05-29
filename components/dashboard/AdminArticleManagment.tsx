@@ -92,7 +92,7 @@ export default function AdminArticleManagement({
               >
                 <td className="px-12 py-8">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-emerald-950/5 relative flex-shrink-0">
+                    <div className="w-14 h-14 rounded-xl overflow-hidden bg-emerald-950/5 relative shrink-0">
                       <Image
                         src={article.thumbnail || "/placeholder.jpg"}
                         alt={article.title}

@@ -18,6 +18,7 @@ export interface IUser extends Document {
   bio?: string;
   dateOfBirth: Date;
   avatar?: string;
+  avatarPublicId?: string;
   bookmarks: Types.ObjectId[];
   likedArticles: Types.ObjectId[];
   comparePassword(password: string): Promise<boolean>;
@@ -54,6 +55,7 @@ const userSchema = new Schema<IUser>(
       },
     },
     avatar: { type: String },
+    avatarPublicId: { type: String },
     bookmarks: [{ type: Schema.Types.ObjectId, ref: "Article" }],
     likedArticles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
   },

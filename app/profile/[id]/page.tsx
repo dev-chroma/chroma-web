@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
-
 import Image from "next/image";
 import { Mail, GraduationCap, Calendar } from "lucide-react";
-
 import { connectDB } from "@/lib/db";
 
 import "@/models/User";
@@ -11,8 +9,9 @@ import "@/models/Category";
 
 import User from "@/models/User";
 import Article from "@/models/Article";
-
 import ProfileTabs from "@/components/profile/ProfileTabs";
+import { getCurrentUser } from "@/lib/getCurrentUser";
+import ProfileAvatarUpload from "@/components/ProfileAvatarUpload";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -24,6 +23,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   await connectDB();
 
   const { id } = await params;
+  const currentUser = await getCurrentUser();
+
+  const isOwnProfile = currentUser?._id?.toString() === id;
   const [profile, articles] = await Promise.all([
     User.findById(id).lean(),
 
@@ -75,11 +77,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 </div>
               )}
 
-              <div className="absolute -bottom-4 -right-4 bg-white px-6 py-2 rounded-2xl shadow-xl border border-emerald-950/5 z-20">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-950">
-                  {profile.role}
-                </span>
-              </div>
+              {isOwnProfile && <ProfileAvatarUpload />}
             </div>
 
             {/* CONTENT */}

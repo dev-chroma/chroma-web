@@ -17,6 +17,8 @@ export default async function DashboardPage() {
     redirect("/auth");
   }
 
+  console.time("dashboard-query");
+
   // PARALLEL FETCHING
   const [
     userArticles,
@@ -32,6 +34,7 @@ export default async function DashboardPage() {
         $exists: false,
       },
     })
+      .select("title thumbnail status likes reads createdAt category")
       .populate("category", "name slug")
       .sort({
         createdAt: -1,
@@ -40,10 +43,8 @@ export default async function DashboardPage() {
     user.role === "Admin" || user.role === "Editor"
       ? Article.find({
           status: "Pending",
-          deletedAt: {
-            $exists: false,
-          },
         })
+          .select("title thumbnail status author category createdAt")
           .populate("author", "firstName surname avatar")
           .populate("category", "name slug")
           .lean()
@@ -63,6 +64,8 @@ export default async function DashboardPage() {
       : 0,
   ]);
 
+  console.timeEnd("dashboard-query");
+
   const serializedUser = JSON.parse(JSON.stringify(user));
   const serializedArticles = JSON.parse(JSON.stringify(userArticles));
   const serializedPending = JSON.parse(JSON.stringify(pendingReviews));
@@ -73,6 +76,8 @@ export default async function DashboardPage() {
     pendingArticles,
     publishedArticles,
   };
+
+  console.log("Articles:", JSON.stringify(userArticles).length / 1024, "KB");
 
   return (
     <DashboardTabs
