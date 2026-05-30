@@ -119,11 +119,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
             </span>
           </div>
 
-          <h3 className="text-xl font-serif font-bold text-emerald-950 mb-3 group-hover:text-emerald-800 transition-colors line-clamp-2 leading-tight">
+          <h3 className="text-xl font-serif font-bold text-emerald-950 mb-3 group-hover:text-emerald-800 transition-colors line-clamp-1 truncate leading-tight">
             {article.title}
           </h3>
 
-          <p className="text-emerald-950/60 text-sm line-clamp-3 mb-6 leading-relaxed">
+          <p className="text-emerald-950/60 text-sm line-clamp-2 truncate mb-6 leading-relaxed">
             {article.excerpt}
           </p>
 

@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ trendingArticles }) => {
     <aside className="space-y-12">
       {/* TRENDING */}
 
-      <section>
+      <section className="bg-white p-10 rounded-[2.5rem] border border-emerald-950/5 shadow-2xl shadow-emerald-950/5 relative overflow-hidden flex flex-col">
         <div className="flex items-center gap-3 mb-10">
           <div className="w-10 h-10 bg-emerald-950/5 rounded-full flex items-center justify-center text-emerald-950">
             <TrendingUp className="w-5 h-5" />

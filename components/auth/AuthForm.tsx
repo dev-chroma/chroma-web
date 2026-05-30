@@ -195,14 +195,14 @@ export default function AuthForm() {
         </button>
       </form>
 
-      <div className="mt-10 pt-10 border-t border-emerald-950/5 text-center">
-        <p className="text-sm text-emerald-950/40 font-medium mb-4">
+      <div className="pt-10 text-center">
+        <p className="text-sm text-emerald-950/40 font-medium">
           {isLogin ? "Don't have an account?" : "Already have an account?"}
         </p>
 
         <button
           onClick={() => setIsLogin((prev) => !prev)}
-          className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-950 hover:underline underline-offset-8 decoration-emerald-950/20 transition-all"
+          className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-950 underline underline-offset-2 cursor-pointer decoration-emerald-950/20 transition-all"
         >
           {isLogin ? "Join the collective" : "Enter your studio"}
         </button>

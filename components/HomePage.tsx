@@ -105,7 +105,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
         {/* CONTENT */}
 
-        <div className="flex flex-col lg:flex-row gap-20 xl:gap-32">
+        <div className="flex flex-col lg:flex-row gap-15 xl:gap-20">
           {/* MAIN */}
 
           <div className="lg:w-2/3">
@@ -119,7 +119,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 xl:gap-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 xl:gap-12">
               {serializedArticles.map((article) => (
                 <ArticleCard key={article._id} article={article} />
               ))}

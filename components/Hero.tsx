@@ -102,24 +102,24 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
 
         <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 z-20">
           <div className="flex items-center gap-4 mb-6">
-            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-bold tracking-[0.2em] uppercase border border-white/20">
+            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[8px] font-bold tracking-[0.2em] uppercase border border-white/20">
               Featured{" "}
               {typeof article.category === "string"
                 ? article.category
                 : article.category?.name}
             </span>
 
-            <div className="flex items-center gap-2 text-[10px] text-cream-50/60 uppercase tracking-[0.2em] font-medium">
+            <div className="flex items-center gap-2 text-[8px] text-cream-50/60 uppercase tracking-[0.2em] font-medium">
               <Clock className="w-3.5 h-3.5" />
               {article.readTime} reading time
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-serif font-bold mb-6 max-w-4xl leading-none line-clamp-1 truncate tracking-tight text-white">
+          <h1 className="text-3xl md:text-5xl font-serif font-bold mb-6 max-w-4xl leading-none line-clamp-1 truncate tracking-tight text-white">
             {article.title}
           </h1>
 
-          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
+          <p className="text-md md:text-lg text-white/90 mb-10 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
             {article.excerpt}
           </p>
 

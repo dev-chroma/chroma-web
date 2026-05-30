@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 
-import { Mail, Globe, MessageSquare, Share2 } from "lucide-react";
+import { Mail, Globe, MessageSquare, Share2, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
+  const footerLinkClass =
+    "group inline-flex items-center hover:text-white transition-colors";
   return (
     <footer className="bg-emerald-950 text-cream-50 pt-24 pb-12 rounded-t-4xl md:rounded-t-[4rem] mt-32 relative overflow-hidden">
       {/* TOP LINE */}
@@ -72,44 +74,48 @@ const Footer = () => {
           {/* RESOURCES */}
 
           <div>
-            <h4 className="text-white font-bold mb-10 uppercase tracking-[0.2em] text-[10px]">
+            <h4 className="text-white font-bold mb-10 uppercase tracking-[0.2em] text-sm">
               Resources
             </h4>
 
             <ul className="space-y-5 text-sm text-cream-50/60 font-medium">
               <li>
-                <Link
-                  href="/submit"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Submission Guidelines
+                <Link href="/submit" className={footerLinkClass}>
+                  <span>Submission Guidelines</span>
+
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/submit"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Editorial Policy
+                <Link href="/submit" className={footerLinkClass}>
+                  <span>Editorial Policy</span>
+
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Author Interviews
+                <Link href="/" className={footerLinkClass}>
+                  <span>Author Interviews</span>
+
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/about"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Writing Tips & Tricks
+                <Link href="/about" className={footerLinkClass}>
+                  <span>Writing Tips & Tricks</span>
+
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
             </ul>
@@ -118,44 +124,45 @@ const Footer = () => {
           {/* PLATFORM */}
 
           <div>
-            <h4 className="text-white font-bold mb-10 uppercase tracking-[0.2em] text-[10px]">
+            <h4 className="text-white font-bold mb-10 uppercase tracking-[0.2em] text-sm">
               Platform
             </h4>
 
             <ul className="space-y-5 text-sm text-cream-50/60 font-medium">
               <li>
-                <Link
-                  href="/about"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  About Our Vision
+                <Link href="/about" className={footerLinkClass}>
+                  <span>About Our Vision</span>
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Contact Editorial
+                <Link href="/contact" className={footerLinkClass}>
+                  <span>Contact Editorial</span>
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/auth"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Join the Team
+                <Link href="/auth" className={footerLinkClass}>
+                  <span>Join the Team</span>
+
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
 
               <li>
-                <Link
-                  href="/about"
-                  className="hover:text-white transition-all hover:translate-x-1 inline-block"
-                >
-                  Privacy & Safety
+                <Link href="/about" className={footerLinkClass}>
+                  <span>Privacy & Safety</span>
+                  <span className="w-4 ml-1 overflow-hidden">
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
+                  </span>
                 </Link>
               </li>
             </ul>
