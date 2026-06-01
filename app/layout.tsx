@@ -32,7 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col selection:bg-emerald-600 selection:text-cream-50">
+      <body className="min-h-full flex flex-col selection:bg-emerald-950/85 selection:text-cream-50">
         <AuthProvider>
           <Header />
           <main className="flex-1">{children}</main>
