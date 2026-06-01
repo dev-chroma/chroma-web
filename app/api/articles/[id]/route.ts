@@ -47,11 +47,8 @@ export async function GET(
     await connectDB();
 
     const { id } = await context.params;
-
     console.log("ARTICLE ID:", id);
-
     const allArticles = await Article.find();
-
     console.log("ALL ARTICLES:", allArticles);
 
     const article = await Article.findById(id)
@@ -95,9 +92,7 @@ export async function PUT(
 ) {
   try {
     await connectDB();
-
     const { id } = await context.params;
-
     const auth = await requireAuth(req);
 
     if (auth.error) {
@@ -140,6 +135,7 @@ export async function PUT(
       category: categoryInput,
       thumbnail,
       featuredImage,
+      readTime,
     } = body;
 
     const categoryId = categoryInput
@@ -155,6 +151,7 @@ export async function PUT(
         category: categoryId,
         thumbnail: thumbnail || featuredImage,
         featuredImage: featuredImage || thumbnail,
+        readTime,
         status: "Pending",
       },
       {

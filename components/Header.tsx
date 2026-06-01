@@ -220,7 +220,7 @@ const Header = () => {
               <div className="flex items-center gap-3">
                 <Link
                   href="/dashboard"
-                  className="flex items-center gap-2 px-6 py-2.5 bg-brand-main text-brand-dark rounded-full text-sm font-bold hover:bg-brand-accent hover:text-white transition-all hover:shadow-lg hover:shadow-brand-main/20"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-emerald-950 text-cream-50 rounded-full text-sm font-bold hover:bg-emerald-900 hover:text-white transition-all hover:shadow-lg hover:shadow-emerald-950/20"
                 >
                   <User className="w-4 h-4" />
 
@@ -238,7 +238,7 @@ const Header = () => {
             ) : (
               <Link
                 href="/auth"
-                className="flex items-center gap-2 px-6 py-2.5 bg-brand-main text-brand-dark rounded-full text-sm font-bold hover:bg-brand-accent hover:text-white transition-all shadow-md"
+                className="flex items-center gap-2 px-6 py-2.5 bg-emerald-950 text-cream-50 rounded-full text-sm font-bold hover:bg-emerald-900 hover:text-white transition-all shadow-md"
               >
                 <User className="w-4 h-4" />
 

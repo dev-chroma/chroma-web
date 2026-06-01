@@ -74,7 +74,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 
   return (
     <Link href={`/article/${article._id}`} className="group h-full">
-      <article className="bg-white rounded-3xl overflow-hidden border border-emerald-950/5 group cursor-pointer hover:shadow-2xl hover:shadow-emerald-950/10 transition-all duration-500 flex flex-col h-full">
+      <article className="bg-white rounded-3xl overflow-hidden border border-emerald-950/8 group shadow-2xl cursor-pointer shadow-emerald-950/10 transition-all duration-500 flex flex-col h-full">
         {/* IMAGE */}
 
         <div className="relative overflow-hidden aspect-4/3">

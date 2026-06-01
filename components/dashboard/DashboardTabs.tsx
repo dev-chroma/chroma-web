@@ -92,21 +92,21 @@ export default function DashboardTabs({
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex gap-3 md:gap-4">
             <Link
               href={`/profile/${user._id}`}
-              className="flex items-center justify-center gap-4 px-10 py-5 bg-emerald-950/10 text-emerald-950 rounded-full font-bold text-xs tracking-[0.2em] hover:bg-emerald-950/15 transition-all shadow-xl shadow-emerald-950/10 group active:scale-95"
+              className="flex-1 md:flex-none flex items-center justify-center gap-3 px-4 md:px-10 py-5 bg-emerald-950/10 text-emerald-950 rounded-full font-bold text-[10px] md:text-xs tracking-[0.15em] md:tracking-[0.2em] hover:bg-emerald-950/15 transition-all shadow-xl shadow-emerald-950/10 active:scale-95"
             >
-              <User className="w-5 h-5" />
+              <User className="w-4 h-4 md:w-5 md:h-5" />
               VIEW PROFILE
             </Link>
 
             <Link
               href="/submit-piece"
-              className="flex items-center justify-center gap-4 px-10 py-5 bg-emerald-950 text-cream-50 rounded-full font-bold text-xs tracking-[0.2em] hover:bg-emerald-900 transition-all shadow-2xl shadow-emerald-950/40 group active:scale-95"
+              className="flex-1 md:flex-none flex items-center justify-center gap-3 px-4 md:px-10 py-5 bg-emerald-950 text-cream-50 rounded-full font-bold text-[10px] md:text-xs tracking-[0.15em] md:tracking-[0.2em] hover:bg-emerald-900 transition-all shadow-2xl shadow-emerald-950/40 active:scale-95 group"
             >
-              <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
-              SUBMIT NEW PIECE
+              <Plus className="w-4 h-4 md:w-5 md:h-5 group-hover:rotate-90 transition-transform duration-500" />
+              SUBMIT WRITING
             </Link>
           </div>
         </div>
@@ -114,48 +114,50 @@ export default function DashboardTabs({
         {/* TABS */}
 
         {user.role === "Admin" && (
-          <div className="flex flex-wrap gap-4 mb-16">
-            {[
-              {
-                id: "my-studio",
-                label: "My Studio",
-                icon: LayoutDashboard,
-              },
+          <div className="mb-16 overflow-x-auto scrollbar-hide py-2">
+            <div className="flex gap-3 min-w-max pb-2">
+              {[
+                {
+                  id: "my-studio",
+                  label: "My Studio",
+                  icon: LayoutDashboard,
+                },
 
-              {
-                id: "user-management",
-                label: "User Management",
-                icon: Users,
-              },
+                {
+                  id: "user-management",
+                  label: "User Management",
+                  icon: Users,
+                },
 
-              {
-                id: "all-articles",
-                label: "Article Control",
-                icon: Shield,
-              },
+                {
+                  id: "all-articles",
+                  label: "Article Control",
+                  icon: Shield,
+                },
 
-              {
-                id: "category-management",
+                {
+                  id: "category-management",
 
-                label: "Category Management",
+                  label: "Category Management",
 
-                icon: Tag,
-              },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as DashboardTab)}
-                className={`flex items-center gap-3 px-8 py-4 rounded-full font-bold text-xs tracking-widest transition-all ${
-                  activeTab === tab.id
-                    ? "bg-emerald-950 text-cream-50 shadow-xl shadow-emerald-950/20 scale-105"
-                    : "bg-emerald-950/5 text-emerald-950/40 hover:bg-emerald-950/10"
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
+                  icon: Tag,
+                },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as DashboardTab)}
+                  className={`shrink-0 flex items-center ml-2 gap-3 px-6 md:px-8 py-4 rounded-full font-bold text-xs tracking-widest transition-all ${
+                    activeTab === tab.id
+                      ? "bg-emerald-950 text-cream-50 scale-105"
+                      : "bg-emerald-950/5 text-emerald-950/40 hover:bg-emerald-950/10"
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
 
-                {tab.label}
-              </button>
-            ))}
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 

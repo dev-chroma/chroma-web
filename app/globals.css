@@ -233,3 +233,12 @@ h6 {
     border-right-color: var(--border);
   }
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

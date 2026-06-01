@@ -36,7 +36,7 @@ const articleSchema = new Schema<IArticle>(
     thumbnail: { type: String },
     featuredImage: { type: String }, // Keep for legacy
     tags: [{ type: String }],
-    readTime: { type: String, default: "5 min" },
+    readTime: { type: String },
     likes: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
     bookmarksCount: { type: Number, default: 0 },

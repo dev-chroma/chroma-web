@@ -73,7 +73,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
         onClick={() => router.push(`/article/${article._id}`)}
         className="relative cursor-pointer transition-all duration-700"
       >
-        <div className="absolute inset-0 bg-linear-to-t from-brand-main via-brand-main/60 to-transparent z-10" />
+        <div className="absolute inset-0 bg-linear-to-t from-emerald-950/60 via-brand-main/30 to-transparent z-10" />
 
         {/* IMAGE CAROUSEL */}
 
@@ -102,7 +102,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
 
         <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 z-20">
           <div className="flex items-center gap-4 mb-6">
-            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[8px] font-bold tracking-[0.2em] uppercase border border-white/20">
+            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[8px] font-bold tracking-[0.2em] uppercase border text-white border-white/20">
               Featured{" "}
               {typeof article.category === "string"
                 ? article.category
@@ -119,85 +119,87 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
             {article.title}
           </h1>
 
-          <p className="text-md md:text-lg text-white/90 mb-10 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
+          <p className="text-md md:text-lg text-white/90 mb-5 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
             {article.excerpt}
           </p>
 
-          {/* FOOTER */}
+          <div className="hidden md:block">
+            {/* FOOTER */}
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-t border-white/10 pt-10 mt-auto md:gap-0 gap-6">
-            {/* AUTHOR */}
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-t border-white/10 pt-8 md:gap-0 gap-6">
+              {/* AUTHOR */}
 
-            <div className="flex items-center gap-5">
-              <div className="relative">
-                {article.author.avatar ? (
-                  <Image
-                    src={article.author.avatar}
-                    alt={article.author.firstName}
-                    width={56}
-                    height={56}
-                    className="w-14 h-14 rounded-full border-2 border-white/20 object-cover"
-                  />
-                ) : (
-                  <div className="w-14 h-14 rounded-full border-2 border-white/20 bg-emerald-800 flex items-center justify-center font-serif font-bold text-white">
-                    {article.author.firstName?.[0]}
+              <div className="flex items-center gap-5">
+                <div className="relative">
+                  {article.author.avatar ? (
+                    <Image
+                      src={article.author.avatar}
+                      alt={article.author.firstName}
+                      width={56}
+                      height={56}
+                      className="w-14 h-14 rounded-full border-2 border-white/20 object-cover"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full border-2 border-white/20 bg-emerald-800 flex items-center justify-center font-serif font-bold text-white">
+                      {article.author.firstName?.[0]}
+                    </div>
+                  )}
+
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-emerald-950 rounded-full" />
+                </div>
+
+                <div>
+                  <span className="block text-[10px] text-cream-50/40 uppercase tracking-[0.2em] mb-1 font-bold">
+                    Curated By
+                  </span>
+
+                  <span className="block font-medium text-xl font-serif text-white">
+                    {article.author.firstName} {article.author.surname}
+                  </span>
+                </div>
+              </div>
+
+              {/* ACTIONS */}
+
+              <div className="flex items-center gap-6 w-full md:w-auto">
+                <div className="flex items-center gap-6 mr-4">
+                  {/* LIKE */}
+
+                  <div className="flex items-center gap-2">
+                    <Heart
+                      className={`w-6 h-6 transition-all duration-300 ${
+                        isLiked
+                          ? "text-red-500 fill-red-500"
+                          : "text-cream-50/40 group-hover/likes:text-red-500 group-hover/likes:fill-red-500"
+                      }`}
+                    />
+
+                    <span className="font-bold text-lg text-white">
+                      {article.likes}
+                    </span>
                   </div>
-                )}
 
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-emerald-950 rounded-full" />
-              </div>
+                  {/* VIEWS */}
 
-              <div>
-                <span className="block text-[10px] text-cream-50/40 uppercase tracking-[0.2em] mb-1 font-bold">
-                  Curated By
-                </span>
+                  <div className="flex items-center gap-2 text-cream-50/40">
+                    <Eye className="w-6 h-6" />
 
-                <span className="block font-medium text-xl font-serif text-white">
-                  {article.author.firstName} {article.author.surname}
-                </span>
-              </div>
-            </div>
-
-            {/* ACTIONS */}
-
-            <div className="flex items-center gap-6 w-full md:w-auto">
-              <div className="flex items-center gap-6 mr-4">
-                {/* LIKE */}
-
-                <div className="flex items-center gap-2">
-                  <Heart
-                    className={`w-6 h-6 transition-all duration-300 ${
-                      isLiked
-                        ? "text-red-500 fill-red-500"
-                        : "text-cream-50/40 group-hover/likes:text-red-500 group-hover/likes:fill-red-500"
-                    }`}
-                  />
-
-                  <span className="font-bold text-lg text-white">
-                    {article.likes}
-                  </span>
+                    <span className="font-bold text-lg text-white">
+                      {article.reads || 0}
+                    </span>
+                  </div>
                 </div>
 
-                {/* VIEWS */}
+                {/* BUTTON */}
 
-                <div className="flex items-center gap-2 text-cream-50/40">
-                  <Eye className="w-6 h-6" />
-
-                  <span className="font-bold text-lg text-white">
-                    {article.reads || 0}
-                  </span>
-                </div>
+                <button
+                  onClick={handleExplore}
+                  className="flex-1 md:flex-none flex items-center justify-center gap-3 px-8 py-4 bg-brand-dark text-cream-50 rounded-full font-bold text-sm tracking-wide hover:bg-brand-accent transition-all hover:translate-x-2 active:scale-95 shadow-lg shadow-black/20"
+                >
+                  EXPLORE STORY
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
-
-              {/* BUTTON */}
-
-              <button
-                onClick={handleExplore}
-                className="flex-1 md:flex-none flex items-center justify-center gap-3 px-8 py-4 bg-brand-dark text-cream-50 rounded-full font-bold text-sm tracking-wide hover:bg-brand-accent transition-all hover:translate-x-2 active:scale-95 shadow-lg shadow-black/20"
-              >
-                EXPLORE STORY
-                <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>
@@ -213,7 +215,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
 
               handlePrev();
             }}
-            className="p-4 bg-black/20 backdrop-blur-md rounded-full text-white hover:bg-black/40 transition-all pointer-events-auto"
+            className="p-4 bg-black/20 backdrop-blur-md outline-none rounded-full text-white hover:bg-black/40 transition-all pointer-events-auto"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -224,7 +226,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
 
               handleNext();
             }}
-            className="p-4 bg-black/20 backdrop-blur-md rounded-full text-white hover:bg-black/40 transition-all pointer-events-auto"
+            className="p-4 bg-black/20 backdrop-blur-md outline-none rounded-full text-white hover:bg-black/40 transition-all pointer-events-auto"
           >
             <ChevronRight className="w-6 h-6" />
           </button>

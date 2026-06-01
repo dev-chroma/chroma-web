@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 
-import { Mail, Globe, MessageSquare, Share2, ArrowUpRight } from "lucide-react";
+import { Mail, Globe, ArrowUpRight } from "lucide-react";
+import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import Image from "next/image";
 
 const Footer = () => {
@@ -17,7 +18,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* GRID */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-12">
           {/* BRAND */}
 
           <div className="space-y-8">
@@ -46,11 +47,11 @@ const Footer = () => {
                   url: "https://chromadiaries.com",
                 },
                 {
-                  Icon: MessageSquare,
-                  url: "https://discord.gg/chromadiaries",
+                  Icon: FaWhatsapp,
+                  url: "https://wa.me/918086636371",
                 },
                 {
-                  Icon: Share2,
+                  Icon: FaInstagram,
                   url: "https://instagram.com/chromadiaries",
                 },
                 {
@@ -170,8 +171,11 @@ const Footer = () => {
 
           {/* PARTNER */}
 
-          <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 shadow-2xl relative group overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all duration-700" />
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/5 backdrop-blur-2xl p-8 transition-all duration-500 hover:bg-white/8 hover:border-white/20">
+            {/* Glow Effects */}
+            <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-white/10 blur-3xl transition-all duration-700 group-hover:bg-white/15" />
+
+            <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-white/5 blur-3xl" />
 
             <h4 className="text-white font-serif font-bold mb-6 text-xl">
               Academic partner
@@ -207,7 +211,7 @@ const Footer = () => {
 
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-[0.2em] font-bold text-cream-50/30">
           <div>
-            © {new Date().getFullYear()} CHROMA DIARIES MAGAZINE. ALL RIGHTS
+            © {new Date().getFullYear()} CHROMADIARIES WEB MAGAZINE. ALL RIGHTS
             RESERVED.
           </div>
 

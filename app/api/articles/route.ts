@@ -145,6 +145,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  console.log("POST /api/articles HIT");
   try {
     await connectDB();
 
@@ -155,6 +156,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    console.log("REQUEST BODY:", body);
 
     const {
       title,
@@ -163,6 +165,7 @@ export async function POST(req: Request) {
       category: categoryInput,
       thumbnail,
       featuredImage,
+      readTime,
     } = body;
 
     const categoryId = await resolveCategoryId(categoryInput);
@@ -178,6 +181,8 @@ export async function POST(req: Request) {
       );
     }
 
+    console.log("READ TIME BEFORE SAVE:", readTime);
+
     const article = await Article.create({
       title,
       excerpt,
@@ -185,9 +190,12 @@ export async function POST(req: Request) {
       category: categoryId,
       thumbnail: thumbnail || featuredImage,
       featuredImage: featuredImage || thumbnail,
+      readTime,
       author: auth.user.id,
       status: "Pending",
     });
+
+    console.log("SAVED ARTICLE:", article.readTime);
 
     const populatedArticle = await Article.findById(article._id)
       .populate("category", "name")

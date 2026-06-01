@@ -19,36 +19,36 @@ export default function ProfileTabs({ profile, articles }: ProfileTabsProps) {
   );
 
   return (
-    <div className="container mx-auto px-4 mt-20">
+    <div className="container mx-auto px-4">
       <div className="max-w-7xl mx-auto">
         {/* TABS */}
 
-        <div className="flex justify-center md:justify-start items-center gap-12 mb-20 border-b border-emerald-950/5 pb-8">
+        <div className="flex justify-center md:justify-start items-center gap-12 mb-20 border-b border-emerald-950/5 pb-4">
           <button
             onClick={() => setActiveTab("chronicles")}
-            className={`relative text-[10px] font-bold uppercase tracking-[0.4em] transition-all ${
+            className={`font-serif relative text-md font-bold tracking-wide transition-all ${
               activeTab === "chronicles"
                 ? "text-emerald-950"
-                : "text-emerald-950/20 hover:text-emerald-950/40"
+                : "text-emerald-950/30 hover:text-emerald-950/40"
             }`}
           >
             Published Chronicles
             {activeTab === "chronicles" && (
-              <div className="absolute -bottom-9 left-0 right-0 h-1 bg-emerald-950 rounded-full" />
+              <div className="absolute -bottom-5 left-0 right-0 h-1 bg-emerald-950 rounded-full" />
             )}
           </button>
 
           <button
             onClick={() => setActiveTab("about")}
-            className={`relative text-[10px] font-bold uppercase tracking-[0.4em] transition-all ${
+            className={`font-serif relative text-md font-bold tracking-wide transition-all ${
               activeTab === "about"
                 ? "text-emerald-950"
-                : "text-emerald-950/20 hover:text-emerald-950/40"
+                : "text-emerald-950/30 hover:text-emerald-950/40"
             }`}
           >
-            The Author&apos;s Path
+            Author&apos;s Path
             {activeTab === "about" && (
-              <div className="absolute -bottom-9 left-0 right-0 h-1 bg-emerald-950 rounded-full" />
+              <div className="absolute -bottom-5 left-0 right-0 h-1 bg-emerald-950 rounded-full" />
             )}
           </button>
         </div>
@@ -56,7 +56,7 @@ export default function ProfileTabs({ profile, articles }: ProfileTabsProps) {
         {/* CONTENT */}
 
         {activeTab === "chronicles" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {articles.map((article) => (
               <div key={article._id} className="h-full">
                 <ArticleCard article={article} />

@@ -28,6 +28,18 @@ interface FormDataState {
   thumbnailPublicId: string;
 }
 
+function calculateReadTime(text: string, wpm = 225) {
+  const cleanText = text.trim();
+
+  if (!cleanText) {
+    return 0;
+  }
+
+  const wordCount = cleanText.split(/\s+/).length;
+
+  return Math.ceil(wordCount / wpm);
+}
+
 export default function ArticleEditorForm({
   categories,
   article,
@@ -45,6 +57,11 @@ export default function ArticleEditorForm({
     thumbnail: article?.thumbnail || "",
     thumbnailPublicId: "",
   });
+
+  const readTime = calculateReadTime(formData.body);
+  const wordCount = formData.body.trim()
+    ? formData.body.trim().split(/\s+/).length
+    : 0;
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -149,11 +166,13 @@ export default function ArticleEditorForm({
         content: formData.body,
         category: formData.category,
         thumbnail: formData.thumbnail,
+        readTime: `${readTime} min`,
       };
 
       if (isEdit && article?._id) {
         await api.articles.update(article._id, payload as UpdateArticlePayload);
       } else {
+        console.log("SUBMIT PAYLOAD:", payload);
         await api.articles.create(payload as CreateArticlePayload);
       }
       router.replace("/dashboard");
@@ -394,12 +413,35 @@ export default function ArticleEditorForm({
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-
                   body: e.target.value,
                 }))
               }
               className="w-full min-h-175 resize-none bg-transparent outline-none text-lg leading-relaxed"
             />
+
+            {/* WRITING STATS */}
+
+            <div className="mt-8 pt-6 border-t border-emerald-950/5 flex items-center justify-between">
+              <div>
+                <span className="block text-[10px] uppercase tracking-[0.2em] text-emerald-950/40 font-bold mb-1">
+                  Word Count
+                </span>
+
+                <span className="text-2xl font-serif font-bold text-emerald-950">
+                  {wordCount.toLocaleString()}
+                </span>
+              </div>
+
+              <div className="text-right">
+                <span className="block text-[10px] uppercase tracking-[0.2em] text-emerald-950/40 font-bold mb-1">
+                  Read Time
+                </span>
+
+                <span className="text-2xl font-serif font-bold text-emerald-950">
+                  {readTime} min
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* SUBMIT */}

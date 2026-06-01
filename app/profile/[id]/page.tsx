@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { Mail, GraduationCap, Calendar } from "lucide-react";
+import { Mail, GraduationCap, Calendar, Edit3 } from "lucide-react";
 import { connectDB } from "@/lib/db";
+import Link from "next/link";
 
 import "@/models/User";
 import "@/models/Article";
@@ -54,7 +55,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     <div className="bg-cream-50 min-h-screen font-sans pb-32">
       {/* HEADER */}
 
-      <div className="relative pt-20 pb-32 overflow-hidden border-b border-emerald-950/5">
+      <div className="relative pt-20 pb-32 overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-12 max-w-5xl mx-auto">
             {/* AVATAR */}
@@ -83,10 +84,23 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             {/* CONTENT */}
 
             <div className="flex-1 text-center md:text-left space-y-6 pt-4">
-              <div className="space-y-2">
-                <h1 className="text-4xl md:text-6xl font-serif font-bold text-emerald-950">
-                  {profile.firstName} {profile.surname}
-                </h1>
+              <div className="space-y-3">
+                <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+                  <h1 className="text-4xl md:text-6xl font-serif font-bold text-emerald-950">
+                    {profile.firstName} {profile.surname}
+                  </h1>
+
+                  {isOwnProfile && (
+                    <Link
+                      href="/profile/edit"
+                      className="self-center md:self-auto md:shrink-0 group inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-emerald-950/10 bg-white/70 backdrop-blur-sm text-emerald-950 hover:bg-emerald-950 hover:text-white transition-all duration-300 shadow-sm hover:shadow-xl
+      "
+                    >
+                      <Edit3 className="w-4 h-4" />
+                      <span className="text-sm font-medium">Edit Profile</span>
+                    </Link>
+                  )}
+                </div>
 
                 <p className="text-emerald-600 font-bold uppercase tracking-[0.3em] text-xs">
                   {profile.school || "Independent Voice"}
@@ -98,7 +112,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                   "A creative soul weaving stories and capturing moments through the power of written expression."}
               </p>
 
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 pt-6">
+              <div className="flex flex-wrap items-center justify-start gap-4 pt-6 px-4 md:px-0">
                 <div className="flex items-center gap-3 text-emerald-950/40">
                   <Mail className="w-4 h-4" />
 

@@ -1,22 +1,24 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
-import { getUserFromToken } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     await connectDB();
 
-    const userData = await getUserFromToken(req);
+    const currentUser = await getCurrentUser();
 
-    if (!userData) {
+    if (!currentUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await User.findById(userData.id).select("-password");
+    const user = await User.findById(currentUser._id).select("-password");
 
     return NextResponse.json(user);
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }
@@ -25,20 +27,23 @@ export async function PATCH(req: Request) {
   try {
     await connectDB();
 
-    const userData = await getUserFromToken(req);
+    const currentUser = await getCurrentUser();
 
-    if (!userData) {
+    if (!currentUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
 
-    const updatedUser = await User.findByIdAndUpdate(userData.id, body, {
+    const updatedUser = await User.findByIdAndUpdate(currentUser._id, body, {
       new: true,
+      runValidators: true,
     }).select("-password");
 
     return NextResponse.json(updatedUser);
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }

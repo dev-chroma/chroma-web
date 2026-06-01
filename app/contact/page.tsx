@@ -12,24 +12,23 @@ const ContactPage = () => {
           {/* HEADER */}
 
           <div className="mb-12 md:mb-20">
-            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-950/40 block mb-3 md:mb-4">
+            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-950/40 block">
               Official Channels
             </span>
 
             <h1 className="text-3xl md:text-6xl font-serif font-bold text-emerald-950 leading-tight">
               Connect
-              <br />
-              <span className="italic font-normal text-emerald-800 text-xl md:text-4xl">
-                with the Collective
-              </span>
             </h1>
+            <span className="font-serif italic font-normal text-emerald-800 text-xl md:text-4xl">
+              with the Collective
+            </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
             {/* LEFT SIDE */}
 
             <div className="lg:col-span-5 flex flex-col">
-              <div className="relative group p-8 md:p-12 bg-white rounded-[2.5rem] md:rounded-[3.5rem] border border-emerald-950/5 shadow-2xl shadow-emerald-950/5 overflow-hidden flex-1 flex flex-col justify-between">
+              <div className="relative group p-8 md:p-12 bg-white rounded-[2.5rem] md:rounded-[3.5rem] border border-emerald-950/8 shadow-3xl shadow-emerald-950/5 overflow-hidden flex-1 flex flex-col justify-between">
                 <div className="absolute top-0 right-0 w-32 md:w-48 h-32 md:h-48 bg-emerald-950/5 rounded-full -mr-16 md:-mr-24 -mt-16 md:-mt-24 group-hover:scale-110 transition-transform duration-700" />
 
                 <div>
@@ -41,14 +40,14 @@ const ContactPage = () => {
                     Our Editorial Office
                   </h3>
 
-                  <div className="space-y-2 text-emerald-950/70 font-medium text-sm md:text-base leading-relaxed">
-                    <p className="text-emerald-950 font-bold text-base md:text-lg mb-2 md:mb-3">
+                  <div className="text-emerald-950/70 font-medium text-sm md:text-base leading-relaxed">
+                    <p className="text-emerald-950 font-bold text-base md:text-lg">
                       ChromaDiaries English Web Magazine
                     </p>
 
                     <p>Sabeelul Hidaya Islamic College,</p>
 
-                    <p>Vadeehidaya, Vattaparambu</p>
+                    <p>Vadheehidaya, Vattaparamba</p>
 
                     <p>Parappur (P.O), Kottakkal</p>
 
@@ -120,7 +119,7 @@ const ContactPage = () => {
 
               {/* OFFICIAL MAIL */}
 
-              <div className="p-8 md:p-10 bg-white border border-emerald-950/5 rounded-4xl md:rounded-[3rem] shadow-xl shadow-emerald-950/5 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-500 min-h-55 md:min-h-70">
+              <div className="p-8 md:p-10 bg-white border border-emerald-950/8 rounded-4xl md:rounded-[3rem] shadow-2xl shadow-emerald-950/8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-500 min-h-55 md:min-h-70">
                 <div className="space-y-4 md:space-y-6">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-950/30 group-hover:bg-emerald-950 group-hover:text-cream-50 transition-colors">
                     <Mail className="w-5 h-5 md:w-6 md:h-6" />
@@ -147,7 +146,7 @@ const ContactPage = () => {
 
               {/* EDITORIAL MAIL */}
 
-              <div className="p-8 md:p-10 bg-white border border-emerald-950/5 rounded-4xl md:rounded-[3rem] shadow-xl shadow-emerald-950/5 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-500 min-h-55 md:min-h-70">
+              <div className="p-8 md:p-10 bg-white border border-emerald-950/8 rounded-4xl md:rounded-[3rem] shadow-2xl shadow-emerald-950/8 flex flex-col justify-between group hover:-translate-y-1 transition-all duration-500 min-h-55 md:min-h-70">
                 <div className="space-y-4 md:space-y-6">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-950/30 group-hover:bg-emerald-950 group-hover:text-cream-50 transition-colors">
                     <Mail className="w-5 h-5 md:w-6 md:h-6" />
@@ -174,7 +173,7 @@ const ContactPage = () => {
 
               {/* CTA */}
 
-              <div className="md:col-span-2 p-8 md:p-10 bg-emerald-50 rounded-[2.5rem] md:rounded-[3rem] border border-emerald-950/5 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-center md:text-left">
+              <div className="md:col-span-2 p-8 md:p-10 bg-emerald-100 rounded-[2.5rem] md:rounded-[3rem] border border-emerald-950/15 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8 text-center md:text-left">
                 <div className="space-y-2">
                   <p className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-emerald-950/40">
                     Join the collective
