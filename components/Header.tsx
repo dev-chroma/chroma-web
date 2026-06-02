@@ -43,7 +43,7 @@ const Header = () => {
       } else {
         setSearchResults([]);
       }
-    }, 400);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);

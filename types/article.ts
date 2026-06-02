@@ -79,6 +79,7 @@ export interface ArticleComment {
 export interface PopulatedCategory {
   _id: string;
   name: string;
+  slug: string;
 }
 
 export interface PopulatedArticle {

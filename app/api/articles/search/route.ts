@@ -29,34 +29,49 @@ export async function GET(req: Request) {
     }
 
     const articles = await Article.find({
-      $text: {
-        $search: query,
-      },
       status: "Published",
     })
-      .populate("author", "firstName surname email")
-      .populate("category", "name")
-      .limit(limit)
-      .skip((page - 1) * limit)
+      .populate("author", "firstName surname email school avatar")
+      .populate("category", "name slug")
       .lean<PopulatedArticle[]>();
 
-    const total = await Article.countDocuments({
-      $text: {
-        $search: query,
-      },
-      status: "Published",
+    const search = query.toLowerCase();
+
+    const filteredArticles = articles.filter((article) => {
+      const author = typeof article.author === "object" ? article.author : null;
+
+      const category =
+        typeof article.category === "object" ? article.category : null;
+
+      const searchableText = [
+        article.title,
+        article.excerpt,
+        article.content,
+
+        author?.firstName,
+        author?.surname,
+        author?.school,
+        author?.email,
+
+        category?.name,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(search);
     });
 
-    const processedArticles = articles.map((article: PopulatedArticle) => ({
-      ...article,
-      category: typeof article.category === "object" && article.category !== null ? article.category.name : "Uncategorized",
-    }));
+    const paginatedArticles = filteredArticles.slice(
+      (page - 1) * limit,
+      page * limit,
+    );
 
     return NextResponse.json({
-      articles: processedArticles,
-      totalPages: Math.ceil(total / limit),
+      articles: paginatedArticles,
+      totalPages: Math.ceil(filteredArticles.length / limit),
       currentPage: page,
-      totalArticles: total,
+      totalArticles: filteredArticles.length,
     });
   } catch (error) {
     console.error(error);
