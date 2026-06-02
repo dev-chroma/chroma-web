@@ -126,6 +126,18 @@ export const api = {
 
       return data;
     },
+    delete: async (id: string): Promise<void> => {
+      const res = await fetch(`${BASE_URL}/users/${id}`, {
+        method: "DELETE",
+        headers: getHeaders(),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to delete user");
+      }
+    },
   },
 
   articles: {

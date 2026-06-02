@@ -5,7 +5,8 @@ export type DashboardTab =
   | "my-studio"
   | "user-management"
   | "all-articles"
-  | "category-management";
+  | "category-management"
+  | "deleted-articles";
 
 export interface AdminStats {
   totalUsers: number;
@@ -28,4 +29,5 @@ export interface Category {
 export interface DashboardArticle extends PublicArticle {
   author: PublicUser;
   status: ArticleStatus;
+  deletedAt?: string;
 }

@@ -3,7 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Calendar, Lock, Mail, School, User } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Lock,
+  Mail,
+  Phone,
+  School,
+  User,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
 
@@ -13,6 +21,7 @@ interface FormDataState {
   email: string;
   school: string;
   dateOfBirth: string;
+  phone: string;
   password: string;
 }
 
@@ -29,6 +38,7 @@ export default function AuthForm() {
     school: "",
     dateOfBirth: "",
     password: "",
+    phone: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,6 +144,17 @@ export default function AuthForm() {
                 setFormData((prev) => ({
                   ...prev,
                   school: value,
+                }))
+              }
+            />
+            <Input
+              icon={Phone}
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  phone: value,
                 }))
               }
             />

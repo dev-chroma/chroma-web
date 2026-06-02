@@ -9,6 +9,7 @@ export interface PublicUser {
   school: string;
   bio?: string;
   avatar?: string;
+  phone?: string;
   dateOfBirth?: string;
   bookmarks?: string[];
   likedArticles?: string[];

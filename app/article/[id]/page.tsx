@@ -142,7 +142,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          {serializedArticle.author.firstName[0]}
+                          {serializedArticle.author.firstName[0]?.toUpperCase() || "?"}
                         </div>
                       )}
                     </div>
@@ -211,9 +211,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <div className="space-y-8">
               {serializedComments.map((comment) => (
                 <div key={comment._id} className="flex gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-950/5 flex items-center justify-center">
-                    {comment.author.firstName?.[0]}
-                  </div>
+                  {comment.author.avatar ? (
+                    <Image
+                      src={comment.author.avatar}
+                      alt={comment.author.firstName}
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-2xl object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-950/5 flex items-center justify-center">
+                      {comment.author.firstName?.[0]?.toUpperCase() || "?"}
+                    </div>
+                  )}
 
                   <div>
                     <h4 className="font-bold text-emerald-950">

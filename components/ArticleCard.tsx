@@ -143,7 +143,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
                 />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-emerald-950/5 flex items-center justify-center text-xs font-serif font-bold text-emerald-950">
-                  {article.author.firstName?.[0]}
+                  {article.author.firstName?.[0]?.toUpperCase() || "?"}
                 </div>
               )}
 

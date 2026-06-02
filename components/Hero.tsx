@@ -141,7 +141,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
                     />
                   ) : (
                     <div className="w-14 h-14 rounded-full border-2 border-white/20 bg-emerald-800 flex items-center justify-center font-serif font-bold text-white">
-                      {article.author.firstName?.[0]}
+                      {article.author.firstName?.[0]?.toUpperCase() || "?"}
                     </div>
                   )}
 

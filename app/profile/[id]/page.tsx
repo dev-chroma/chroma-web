@@ -74,7 +74,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                 </div>
               ) : (
                 <div className="w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-emerald-950 text-cream-50 flex items-center justify-center text-7xl font-serif font-bold border-8 border-white shadow-2xl relative z-10">
-                  {profile.firstName?.[0]}
+                  {profile.firstName?.[0]?.toUpperCase() || "?"}
                 </div>
               )}
 

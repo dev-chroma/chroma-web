@@ -112,7 +112,7 @@ const AdminCategoryManagement = () => {
           <button
             type="submit"
             disabled={creating || !newCategoryName.trim()}
-            className="px-10 py-5 bg-emerald-950 text-cream-50 rounded-2xl font-bold text-[10px] tracking-[0.2em] uppercase hover:bg-emerald-900 transition-all shadow-xl shadow-emerald-950/20 flex items-center justify-center gap-4 disabled:opacity-50 active:scale-95"
+            className="px-10 py-5 bg-emerald-950 text-cream-50 rounded-2xl cursor-pointer font-bold text-[10px] tracking-[0.2em] uppercase hover:bg-emerald-900 transition-all shadow-xl shadow-emerald-950/20 flex items-center justify-center gap-4 disabled:opacity-50 active:scale-95"
           >
             {creating ? (
               <Loader className="w-4 h-4 animate-spin" />
@@ -147,14 +147,14 @@ const AdminCategoryManagement = () => {
                     <>
                       <button
                         onClick={() => handleSaveEdit(category._id)}
-                        className="p-2 rounded-xl hover:bg-emerald-100"
+                        className="p-2 rounded-xl hover:bg-emerald-100 cursor-pointer"
                       >
                         <Check className="w-4 h-4 text-emerald-600" />
                       </button>
 
                       <button
                         onClick={() => setEditingId(null)}
-                        className="p-2 rounded-xl hover:bg-red-100"
+                        className="p-2 rounded-xl hover:bg-red-100 cursor-pointer"
                       >
                         <X className="w-4 h-4 text-red-500" />
                       </button>
@@ -163,14 +163,14 @@ const AdminCategoryManagement = () => {
                     <>
                       <button
                         onClick={() => handleEdit(category)}
-                        className="p-2 rounded-xl hover:bg-blue-100"
+                        className="p-2 rounded-xl hover:bg-blue-100 cursor-pointer"
                       >
                         <Pencil className="w-4 h-4 text-blue-500" />
                       </button>
 
                       <button
                         onClick={() => handleDelete(category._id)}
-                        className="p-2 rounded-xl hover:bg-red-100"
+                        className="p-2 rounded-xl hover:bg-red-100 cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4 text-red-500" />
                       </button>

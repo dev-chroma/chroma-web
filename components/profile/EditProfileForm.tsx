@@ -11,6 +11,7 @@ interface User {
   surname: string;
   school: string;
   bio?: string;
+  phone?: string;
   dateOfBirth?: string;
   avatar?: string;
 }
@@ -25,6 +26,7 @@ export default function EditProfileForm({ user }: Props) {
   const [form, setForm] = useState({
     firstName: user.firstName || "",
     surname: user.surname || "",
+    phone: user.phone || "",
     school: user.school || "",
     bio: user.bio || "",
     dateOfBirth: user.dateOfBirth
@@ -135,6 +137,18 @@ export default function EditProfileForm({ user }: Props) {
         <input
           name="school"
           value={form.school}
+          onChange={handleChange}
+          className={inputClasses}
+        />
+      </div>
+
+      <div className="mt-6">
+        <label className="block mb-2 text-sm font-medium text-emerald-950">
+          Phone
+        </label>
+        <input
+          name="phone"
+          value={form.phone}
           onChange={handleChange}
           className={inputClasses}
         />

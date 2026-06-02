@@ -1,37 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DashboardArticle } from "@/types/dashboard";
-import { api } from "@/services/api";
+import Image from "next/image";
+import { Loader } from "lucide-react";
 
 import AdminArticleSearch from "./AdminArticleSearch";
-import AdminArticleActions from "./AdminArticleActions";
-import { Loader } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import AdminArticleRecoverActions from "./AdminArticleRecoverActions";
 
-interface AdminArticleManagementProps {
+import { DashboardArticle } from "@/types/dashboard";
+import { useRouter } from "next/navigation";
+
+interface Props {
   search?: string;
 }
 
-export default function AdminArticleManagement({
-  search = "",
-}: AdminArticleManagementProps) {
+export default function AdminArticleRecover({ search = "" }: Props) {
   const [articles, setArticles] = useState<DashboardArticle[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const data = await api.articles.list();
+        const res = await fetch("/api/articles/recovery");
+        const data = await res.json();
 
-        const fetchedArticles = Array.isArray(data)
-          ? data
-          : data.articles || [];
-
-        setArticles(fetchedArticles);
+        setArticles(data.articles || []);
       } catch (error) {
-        console.error("Failed to fetch articles:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -40,12 +37,43 @@ export default function AdminArticleManagement({
     fetchArticles();
   }, []);
 
+  const handleRecover = async (id: string) => {
+    try {
+      await fetch(`/api/articles/recovery/${id}`, {
+        method: "PATCH",
+      });
+
+      setArticles((prev) => prev.filter((article) => article._id !== id));
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const confirmed = confirm("Permanently delete this article?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await fetch(`/api/articles/recovery/${id}`, {
+        method: "DELETE",
+      });
+
+      setArticles((prev) => prev.filter((article) => article._id !== id));
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const filteredArticles = articles.filter(
     (article) =>
       article.title.toLowerCase().includes(search.toLowerCase()) ||
       article.author.firstName.toLowerCase().includes(search.toLowerCase()) ||
-      article.author.surname.toLowerCase().includes(search.toLowerCase()) ||
-      article.category?.name?.toLowerCase().includes(search.toLowerCase()),
+      article.author.surname.toLowerCase().includes(search.toLowerCase()),
   );
 
   if (loading) {
@@ -58,26 +86,23 @@ export default function AdminArticleManagement({
 
   return (
     <div className="bg-white rounded-[3rem] border border-emerald-950/5 shadow-2xl overflow-hidden">
-      {/* HEADER */}
-
       <div className="p-10 md:p-12 border-b border-emerald-950/5 flex flex-col md:flex-row md:items-center justify-between gap-8">
         <h2 className="text-3xl font-serif font-bold text-emerald-950">
-          Global Article Control
+          Recovery Center
         </h2>
 
         <AdminArticleSearch />
       </div>
 
-      {/* TABLE */}
-
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
             <tr className="bg-emerald-950/2 text-emerald-950/30 text-[10px] uppercase tracking-[0.2em] font-bold">
-              <th className="w-[40%] px-12 py-8">Title</th>
-              <th className="w-[25%] px-12 py-8">Author</th>
-              <th className="w-[15%] px-12 py-8 text-center">Status</th>
-              <th className="w-[20%] px-12 py-8 text-center">Actions</th>
+              <th className="px-12 py-8">Title</th>
+              <th className="px-12 py-8">Author</th>
+              <th className="px-12 py-8 text-center">Type</th>
+              <th className="px-12 py-8 text-center">Deleted</th>
+              <th className="px-12 py-8 text-center">Actions</th>
             </tr>
           </thead>
 
@@ -95,14 +120,13 @@ export default function AdminArticleManagement({
                         alt={article.title}
                         fill
                         sizes="56px"
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover"
                       />
                     </div>
-                    <Link href={`/article/${article._id}`} className="flex-1">
-                      <span className="font-serif font-bold text-xl text-emerald-950 group-hover:text-emerald-700 transition-colors">
-                        {article.title}
-                      </span>
-                    </Link>
+
+                    <span className="font-serif font-bold text-lg text-emerald-950">
+                      {article.title}
+                    </span>
                   </div>
                 </td>
 
@@ -111,28 +135,33 @@ export default function AdminArticleManagement({
                 </td>
 
                 <td className="px-12 py-8">
-                  <div className="flex justify-center">
+                  <div className="flex items-center justify-center">
                     <span
                       className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
-                        article.status === "Published"
-                          ? "bg-emerald-100 text-emerald-600"
+                        article.deletedAt
+                          ? "bg-red-100 text-red-600"
                           : "bg-amber-100 text-amber-600"
                       }`}
                     >
-                      {article.status}
+                      {article.deletedAt ? "Deleted" : "Draft"}
                     </span>
                   </div>
                 </td>
 
-                <td className="px-12 py-8 flex gap-4">
-                  <div className="flex-1 flex justify-center">
-                    <AdminArticleActions
+                <td className="px-12 py-8 text-sm text-emerald-950/60">
+                  <div className="flex items-center justify-center">
+                    {article.deletedAt
+                      ? new Date(article.deletedAt).toLocaleDateString()
+                      : "-"}
+                  </div>
+                </td>
+
+                <td className="px-12 py-8">
+                  <div className="flex items-center justify-center">
+                    <AdminArticleRecoverActions
                       articleId={article._id}
-                      onUpdated={() => {
-                        setArticles((prev) =>
-                          prev.filter((a) => a._id !== article._id),
-                        );
-                      }}
+                      onRecover={handleRecover}
+                      onDelete={handleDelete}
                     />
                   </div>
                 </td>
@@ -140,23 +169,6 @@ export default function AdminArticleManagement({
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* FOOTER */}
-      <div className="p-10 md:p-12 bg-emerald-950/2 flex justify-between items-center border-t border-emerald-950/5">
-        <p className="text-[10px] uppercase tracking-widest font-bold text-emerald-950/30">
-          Showing all records
-        </p>
-
-        <div className="flex gap-2">
-          <button className="w-10 h-10 rounded-xl bg-white border border-emerald-950/5 flex items-center justify-center text-emerald-950 font-bold shadow-sm">
-            1
-          </button>
-
-          <button className="w-10 h-10 rounded-xl hover:bg-white transition-all flex items-center justify-center text-emerald-950/20 font-bold hover:shadow-sm">
-            2
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -4,13 +4,12 @@ import { useRouter } from "next/navigation";
 import { Edit, Trash2 } from "lucide-react";
 import { api } from "@/services/api";
 
-interface AdminArticleActionsProps {
+interface Props {
   articleId: string;
+  onUpdated?: () => void;
 }
 
-export default function AdminArticleActions({
-  articleId,
-}: AdminArticleActionsProps) {
+export default function AdminArticleActions({ articleId, onUpdated }: Props) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -22,7 +21,7 @@ export default function AdminArticleActions({
     }
     try {
       await api.articles.delete(articleId);
-      router.refresh();
+      onUpdated?.();
     } catch (error) {
       console.error("Failed to archive article:", error);
     }
@@ -33,7 +32,7 @@ export default function AdminArticleActions({
       {/* EDIT */}
       <button
         onClick={() => router.push(`/edit-piece/${articleId}`)}
-        className="p-2 hover:bg-emerald-50 text-emerald-950/40 hover:text-emerald-950 rounded-lg transition-colors"
+        className="p-2 hover:bg-emerald-50 text-emerald-950/40 hover:text-emerald-950 rounded-lg transition-colors cursor-pointer"
         title="Edit Submission"
       >
         <Edit className="w-5 h-5" />
@@ -42,7 +41,7 @@ export default function AdminArticleActions({
       {/* DELETE */}
       <button
         onClick={handleDelete}
-        className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors"
+        className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors cursor-pointer"
         title="Archive Piece"
       >
         <Trash2 className="w-5 h-5" />

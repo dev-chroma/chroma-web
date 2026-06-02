@@ -13,6 +13,7 @@ import {
   Clock,
   Heart,
   User,
+  Trash2,
 } from "lucide-react";
 import type { DashboardTab, AdminStats } from "@/types/dashboard";
 import type { PublicArticle } from "@/types/article";
@@ -27,6 +28,9 @@ const AdminCategoryManagement = dynamic(
 );
 const AdminUserManagement = dynamic(
   () => import("@/components/dashboard/AdminUserManagment"),
+);
+const AdminArticleRecover = dynamic(
+  () => import("@/components/dashboard/AdminArticleRecover"),
 );
 
 interface DashboardTabsProps {
@@ -141,6 +145,12 @@ export default function DashboardTabs({
                   label: "Category Management",
 
                   icon: Tag,
+                },
+
+                {
+                  id: "deleted-articles",
+                  label: "Recover Articles",
+                  icon: Trash2,
                 },
               ].map((tab) => (
                 <button
@@ -297,11 +307,17 @@ export default function DashboardTabs({
                 <table className="w-full text-left">
                   <thead>
                     <tr className="bg-emerald-950/2 text-emerald-950/30 text-[10px] uppercase tracking-[0.2em] font-bold">
-                      <th className="px-12 py-8">Magnum Opus</th>
-                      <th className="px-12 py-8">Realm</th>
-                      <th className="px-12 py-8">Review Stage</th>
-                      <th className="px-12 py-8">Day of Creation</th>
-                      <th className="px-12 py-8">Audience</th>
+                      <th className="w-[40%] px-12 py-8">Magnum Opus</th>
+                      <th className="w-[18%] px-12 py-8 text-center">Realm</th>
+                      <th className="w-[18%] px-12 py-8 text-center">
+                        Review Stage
+                      </th>
+                      <th className="w-[12%] px-12 py-8 text-center">
+                        Day of Creation
+                      </th>
+                      <th className="w-[12%] px-12 py-8 text-center">
+                        Audience
+                      </th>
                     </tr>
                   </thead>
 
@@ -319,33 +335,41 @@ export default function DashboardTabs({
                       .map((article) => (
                         <tr
                           key={article._id}
-                          className="group hover:bg-emerald-950/1 transition-all cursor-pointer"
+                          className="group hover:bg-emerald-700/5 transition-colors cursor-pointer"
                         >
                           <td className="px-12 py-10">
-                            <div className="flex items-center gap-6">
-                              <div className="w-16 h-16 rounded-2xl bg-emerald-950/5 overflow-hidden shadow-sm group-hover:shadow-md transition-all">
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-2xl bg-emerald-950/5 overflow-hidden relative shadow-sm group-hover:shadow-md transition-all">
                                 <Image
                                   src={article.thumbnail as string}
                                   alt={article.title as string}
-                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                  width={64}
-                                  height={64}
+                                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                  fill
+                                  sizes="64px"
                                 />
                               </div>
-                              <span className="font-serif font-bold text-xl text-emerald-950 group-hover:text-emerald-700 transition-colors">
-                                {article.title}
+
+                              <Link
+                                href={`/article/${article._id}`}
+                                className="group-hover:text-emerald-700 transition-colors"
+                              >
+                                <span className="font-serif font-bold text-xl text-emerald-950 group-hover:text-emerald-700 max-w-100px truncate transition-colors">
+                                  {article.title}
+                                </span>
+                              </Link>
+                            </div>
+                          </td>
+
+                          <td className="px-12 py-10">
+                            <div className="flex items-center justify-center">
+                              <span className="px-4 py-1.5 bg-emerald-950/5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-950 border border-emerald-950/5">
+                                {article.category?.name}
                               </span>
                             </div>
                           </td>
 
                           <td className="px-12 py-10">
-                            <span className="px-4 py-1.5 bg-emerald-950/5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-950 border border-emerald-950/5">
-                              {article.category?.name}
-                            </span>
-                          </td>
-
-                          <td className="px-12 py-10">
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center gap-3">
                               <div
                                 className={`w-2.5 h-2.5 rounded-full ${
                                   article.status === "Published"
@@ -367,13 +391,17 @@ export default function DashboardTabs({
                           </td>
 
                           <td className="px-12 py-10 text-sm text-emerald-950/40 font-bold tracking-tight">
-                            {article.createdAt
-                              ? new Date(article.createdAt).toLocaleDateString()
-                              : "Unknown"}
+                            <div className="flex items-center justify-center gap-2">
+                              {article.createdAt
+                                ? new Date(
+                                    article.createdAt,
+                                  ).toLocaleDateString()
+                                : "Unknown"}
+                            </div>
                           </td>
 
                           <td className="px-12 py-10">
-                            <div className="flex items-center gap-2 font-bold text-emerald-950">
+                            <div className="flex items-center justify-center gap-2 font-bold text-emerald-950">
                               <span className="text-xl font-serif">
                                 {article.likes}
                               </span>
@@ -414,6 +442,7 @@ export default function DashboardTabs({
         {activeTab === "user-management" && <AdminUserManagement />}
         {activeTab === "category-management" && <AdminCategoryManagement />}
         {activeTab === "all-articles" && <AdminArticleManagement />}
+        {activeTab === "deleted-articles" && <AdminArticleRecover />}
       </main>
     </div>
   );

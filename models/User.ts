@@ -17,6 +17,7 @@ export interface IUser extends Document {
   school: string;
   bio?: string;
   dateOfBirth: Date;
+  phone?: string;
   avatar?: string;
   avatarPublicId?: string;
   bookmarks: Types.ObjectId[];
@@ -37,6 +38,7 @@ const userSchema = new Schema<IUser>(
     },
     school: { type: String, required: true },
     bio: { type: String },
+    phone: { type: String },
     dateOfBirth: {
       type: Date,
       required: true,
