@@ -67,7 +67,7 @@ export default function DashboardTabs({
 
   return (
     <div className="font-sans">
-      <main className="container mx-auto px-4 py-12 md:py-20">
+      <main className="container mx-auto px-12 py-12 md:py-20">
         {/* HEADER */}
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">

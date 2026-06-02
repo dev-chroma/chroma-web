@@ -6,7 +6,7 @@ import { MapPin, Mail, MessageCircle, ArrowRight } from "lucide-react";
 
 const ContactPage = () => {
   return (
-    <div className="bg-cream-50 min-h-screen">
+    <div className="bg-cream-50 min-h-screen px-8">
       <div className="container mx-auto px-4 py-12 md:py-24">
         <div className="mx-auto">
           {/* HEADER */}

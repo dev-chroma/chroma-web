@@ -10,7 +10,7 @@ const Footer = () => {
   const footerLinkClass =
     "group inline-flex items-center hover:text-white transition-colors";
   return (
-    <footer className="bg-emerald-950 text-cream-50 pt-24 pb-12 rounded-t-4xl md:rounded-t-[4rem] mt-32 relative overflow-hidden">
+    <footer className="bg-emerald-950 text-cream-50 px-8 pt-24 pb-12 rounded-t-4xl md:rounded-t-[4rem] mt-32 relative overflow-hidden">
       {/* TOP LINE */}
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
@@ -172,9 +172,6 @@ const Footer = () => {
           {/* PARTNER */}
 
           <div className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/5 backdrop-blur-2xl p-8 transition-all duration-500 hover:bg-white/8 hover:border-white/20">
-            {/* Glow Effects */}
-            <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-white/10 blur-3xl transition-all duration-700 group-hover:bg-white/15" />
-
             <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-white/5 blur-3xl" />
 
             <h4 className="text-white font-serif font-bold mb-6 text-xl">

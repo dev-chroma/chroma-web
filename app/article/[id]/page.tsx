@@ -79,7 +79,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   );
 
   return (
-    <div className="bg-cream-50 min-h-screen pb-32">
+    <div className="bg-cream-50 min-h-screen pb-32 px-8">
       <header className="relative pt-8 pb-8 md:pt-12 overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="mx-auto text-center space-y-4">

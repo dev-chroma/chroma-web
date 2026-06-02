@@ -137,7 +137,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-cream-50/80 backdrop-blur-md border-b border-emerald-950/10">
+      <header className="sticky top-0 z-50 w-full px-8 bg-cream-50/80 backdrop-blur-md border-b border-emerald-950/10">
         {/* TOP BAR */}
 
         <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-8">

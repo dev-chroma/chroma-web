@@ -185,7 +185,7 @@ export default function ArticleEditorForm({
   };
 
   return (
-    <div className="min-h-screen bg-cream-50 py-24">
+    <div className="min-h-screen bg-cream-50 py-24 px-8">
       <div className="container mx-auto px-4">
         {/* HEADER */}
 

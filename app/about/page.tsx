@@ -50,7 +50,7 @@ const AboutPage = () => {
 
       {/* VALUES */}
 
-      <section className="py-24 bg-emerald-950/5">
+      <section className="py-24 bg-emerald-950/5 px-8">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-serif font-bold text-emerald-950 text-center mb-16">
             Our Values
