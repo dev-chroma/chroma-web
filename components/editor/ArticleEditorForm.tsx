@@ -12,6 +12,7 @@ import type {
   UpdateArticlePayload,
 } from "@/types/article";
 import type { Category } from "@/types/category";
+import { RichTextEditor } from "../rich-text-editor/Editor";
 
 interface ArticleEditorFormProps {
   categories: Category[];
@@ -406,7 +407,17 @@ export default function ArticleEditorForm({
           {/* CONTENT */}
 
           <div className="bg-white p-12 rounded-[4rem] border border-emerald-950/5 shadow-2xl">
-            <textarea
+            <RichTextEditor
+              field={{
+                value: formData.body,
+                onChange: (value: string) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    body: value,
+                  })),
+              }}
+            />
+            {/* <textarea
               required
               placeholder="Write your masterpiece..."
               value={formData.body}
@@ -417,7 +428,7 @@ export default function ArticleEditorForm({
                 }))
               }
               className="w-full min-h-175 resize-none bg-transparent outline-none text-lg leading-relaxed"
-            />
+            /> */}
 
             {/* WRITING STATS */}
 

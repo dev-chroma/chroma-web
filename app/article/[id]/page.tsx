@@ -16,6 +16,7 @@ import ArticleActions from "@/components/article/ArticleActions";
 import CommentForm from "@/components/article/CommentForm";
 
 import type { ArticleComment, PublicArticle } from "@/types/article";
+import { RenderContent } from "@/components/rich-text-editor/RenderDescription";
 
 interface ArticlePageProps {
   params: Promise<{
@@ -188,13 +189,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </aside>
 
             <article>
-              <div className="prose prose-lg max-w-none prose-headings:font-serif prose-p:text-emerald-950/80 prose-p:leading-loose">
-                {serializedArticle.content
+              <div className="prose prose-lg max-w-none prose-headings:font-serif prose-p:text-emerald-950/90 prose-headings:text-emerald-950/95 prose-p:leading-loose">
+              <RenderContent json={JSON.parse(serializedArticle.content)} />
+                {/* {serializedArticle.content
                   .split(/\n+/)
                   .filter((p) => p.trim())
                   .map((paragraph, idx) => (
                     <p key={idx}>{paragraph}</p>
-                  ))}
+                  ))} */}
               </div>
 
               <ArticleActions article={serializedArticle} />

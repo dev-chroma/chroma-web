@@ -119,7 +119,7 @@ const Hero: React.FC<HeroProps> = ({ articles }) => {
             {article.title}
           </h1>
 
-          <p className="text-md md:text-lg text-white/90 mb-5 max-w-2xl line-clamp-1 truncate md:line-clamp-none font-medium leading-relaxed drop-shadow-md">
+          <p className="text-md md:text-lg text-white/90 mb-5 max-w-4xl line-clamp-1 truncate md:line-clamp-1 font-medium leading-relaxed drop-shadow-md">
             {article.excerpt}
           </p>
 
