@@ -1,20 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-
 import Image from "next/image";
-
 import { usePathname } from "next/navigation";
-
 import { Search, User, Menu, ChevronDown, X, LogOut } from "lucide-react";
-
 import { api } from "@/services/api";
-
 import { useAuth } from "@/contexts/AuthContext";
-
 import type { PublicArticle } from "@/types/article";
+import NotificationBell from "./notifications/NotificationBell";
 
 const Header = () => {
   const { user, loading, logout } = useAuth();
@@ -25,6 +19,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<PublicArticle[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -47,6 +42,24 @@ const Header = () => {
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      if (!user) return;
+
+      try {
+        const res = await fetch("/api/notifications");
+
+        const data = await res.json();
+
+        setNotifications(data);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, [user]);
 
   const navItems = [
     {
@@ -204,7 +217,8 @@ const Header = () => {
 
           {/* RIGHT */}
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-3">
+            {user && <NotificationBell userId={user._id} />}
             {/* SEARCH */}
 
             <button

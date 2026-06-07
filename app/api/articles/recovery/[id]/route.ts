@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 
 import Article from "@/models/Article";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { createNotification } from "@/lib/createNotification";
 
 export async function PATCH(
   req: Request,

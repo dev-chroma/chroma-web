@@ -14,6 +14,7 @@ import {
   Heart,
   User,
   Trash2,
+  Bell,
 } from "lucide-react";
 import type { DashboardTab, AdminStats } from "@/types/dashboard";
 import type { PublicArticle } from "@/types/article";
@@ -31,6 +32,9 @@ const AdminUserManagement = dynamic(
 );
 const AdminArticleRecover = dynamic(
   () => import("@/components/dashboard/AdminArticleRecover"),
+);
+const AdminNotificationManager = dynamic(
+  () => import("@/components/dashboard/AdminNotificationManager"),
 );
 
 interface DashboardTabsProps {
@@ -126,31 +130,30 @@ export default function DashboardTabs({
                   label: "My Studio",
                   icon: LayoutDashboard,
                 },
-
                 {
                   id: "user-management",
                   label: "User Management",
                   icon: Users,
                 },
-
                 {
                   id: "all-articles",
                   label: "Article Control",
                   icon: Shield,
                 },
-
                 {
                   id: "category-management",
-
                   label: "Category Management",
-
                   icon: Tag,
                 },
-
                 {
                   id: "deleted-articles",
                   label: "Recover Articles",
                   icon: Trash2,
+                },
+                {
+                  id: "notifications",
+                  label: "Notifications",
+                  icon: Bell,
                 },
               ].map((tab) => (
                 <button
@@ -443,6 +446,7 @@ export default function DashboardTabs({
         {activeTab === "category-management" && <AdminCategoryManagement />}
         {activeTab === "all-articles" && <AdminArticleManagement />}
         {activeTab === "deleted-articles" && <AdminArticleRecover />}
+        {activeTab === "notifications" && <AdminNotificationManager />}
       </main>
     </div>
   );

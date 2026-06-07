@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ProfileAvatarUpload from "@/components/ProfileAvatarUpload";
@@ -18,10 +18,13 @@ interface User {
 
 interface Props {
   user: User;
+  adminMode?: boolean;
 }
 
-export default function EditProfileForm({ user }: Props) {
+export default function EditProfileForm({ user, adminMode }: Props) {
   const router = useRouter();
+
+  const endpoint = adminMode ? `/api/users/${user._id}` : "/api/users/me";
 
   const [form, setForm] = useState({
     firstName: user.firstName || "",
@@ -33,6 +36,20 @@ export default function EditProfileForm({ user }: Props) {
       ? new Date(user.dateOfBirth).toISOString().split("T")[0]
       : "",
   });
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setForm({
+      firstName: user.firstName || "",
+      surname: user.surname || "",
+      phone: user.phone || "",
+      school: user.school || "",
+      bio: user.bio || "",
+      dateOfBirth: user.dateOfBirth
+        ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+        : "",
+    });
+  }, [user]);
 
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +68,7 @@ export default function EditProfileForm({ user }: Props) {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/users/me", {
+      const res = await fetch(endpoint, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -64,6 +81,7 @@ export default function EditProfileForm({ user }: Props) {
       }
 
       router.push(`/profile/${user._id}`);
+      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to update profile");
@@ -101,7 +119,9 @@ export default function EditProfileForm({ user }: Props) {
         </h2>
 
         <p className="mt-1 text-sm text-emerald-950/50">
-          Update your profile information
+          {adminMode
+            ? "Editing user profile"
+            : "Update your profile information"}
         </p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">

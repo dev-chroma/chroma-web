@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/models/User";
 import { connectDB } from "@/lib/db";
 import { getUserFromToken } from "@/lib/auth";
+import { createNotification } from "@/lib/createNotification";
 
 export async function PATCH(
   req: Request,
@@ -33,6 +34,13 @@ export async function PATCH(
         new: true,
       },
     );
+
+    await createNotification({
+      title: "Role Updated",
+      message: `Your role has been changed to ${body.role}.`,
+      recipients: [id],
+      type: "Role",
+    });
 
     return NextResponse.json(updatedUser);
   } catch {

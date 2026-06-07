@@ -44,7 +44,7 @@ const Footer = () => {
               {[
                 {
                   Icon: Globe,
-                  url: "https://chromadiaries.com",
+                  url: "https://chromadiaries.in",
                 },
                 {
                   Icon: FaWhatsapp,
@@ -52,11 +52,11 @@ const Footer = () => {
                 },
                 {
                   Icon: FaInstagram,
-                  url: "https://instagram.com/chromadiaries",
+                  url: "https://instagram.com/chroma.diaries",
                 },
                 {
                   Icon: Mail,
-                  url: "mailto:editorial@chromadiaries.com",
+                  url: "mailto:editorial@chromadiaries.in",
                 },
               ].map(({ Icon, url }, idx) => (
                 <a

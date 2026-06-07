@@ -9,6 +9,7 @@ import "@/models/Category";
 import Article from "@/models/Article";
 import Category from "@/models/Category";
 import { PopulatedArticle } from "@/types/article";
+import { createNotification } from "@/lib/createNotification";
 
 const resolveCategoryId = async (categoryInput: string) => {
   if (!categoryInput) {
@@ -159,6 +160,13 @@ export async function PUT(
       },
     );
 
+    await createNotification({
+      title: "Article Resubmitted",
+      message: `"${title}" has been submitted for review.`,
+      recipients: [auth.user.id],
+      type: "Article",
+    });
+
     return NextResponse.json(updatedArticle);
   } catch (error) {
     console.error(error);
@@ -223,6 +231,13 @@ export async function DELETE(
     await Article.findByIdAndUpdate(id, {
       deletedAt: new Date(),
       status: "Draft",
+    });
+
+    await createNotification({
+      title: "Article Archived",
+      message: `"${article.title}" has been archived.`,
+      recipients: [article.author.toString()],
+      type: "Article",
     });
 
     return NextResponse.json({

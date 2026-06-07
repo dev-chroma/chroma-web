@@ -6,7 +6,8 @@ export type DashboardTab =
   | "user-management"
   | "all-articles"
   | "category-management"
-  | "deleted-articles";
+  | "deleted-articles"
+  | "notifications";
 
 export interface AdminStats {
   totalUsers: number;

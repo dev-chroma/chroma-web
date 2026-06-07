@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { api } from "@/services/api";
 
 import type { PublicUser, UserRole } from "@/types/user";
-import { Eye, Loader, Trash2, X } from "lucide-react";
+import { Eye, Loader, Pencil, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import CustomRoleDropdown from "../CustomRoleDropdown";
 import Link from "next/link";
@@ -254,6 +254,24 @@ const AdminUserManagement = () => {
                     : "Unknown"}
                 </p>
               </div>
+            </div>
+
+            <div className="mt-8 flex gap-3 w-full">
+              <Link
+                href={`/profile/${selectedUser._id}`}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-950/10 text-emerald-950 font-medium hover:bg-emerald-950/10 transition-all"
+              >
+                <Eye className="w-4 h-4" />
+                View Profile
+              </Link>
+
+              <Link
+                href={`/profile/${selectedUser._id}/edit`}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-950/90 text-white font-medium hover:bg-emerald-900 transition-all"
+              >
+                <Pencil className="w-4 h-4" />
+                Edit Profile
+              </Link>
             </div>
 
             {selectedUser.bio && (

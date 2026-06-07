@@ -49,3 +49,36 @@ export async function DELETE(
     );
   }
 }
+
+export async function PATCH(
+  req: Request,
+  context: {
+    params: Promise<{ id: string }>;
+  },
+) {
+  try {
+    await connectDB();
+
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (currentUser.role !== "Admin") {
+      return NextResponse.json({ message: "Access denied" }, { status: 403 });
+    }
+
+    const { id } = await context.params;
+
+    const body = await req.json();
+
+    const user = await User.findByIdAndUpdate(id, body, {
+      new: true,
+    }).select("-password");
+
+    return NextResponse.json(user);
+  } catch {
+    return NextResponse.json({ message: "Server Error" }, { status: 500 });
+  }
+}
