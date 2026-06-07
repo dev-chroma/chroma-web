@@ -54,8 +54,8 @@ export default function NotificationDropdown({
   );
 
   return (
-    <div className="absolute top-full mt-4 right-0 w-[700px] bg-white translate-x-[35%] rounded-3xl border border-emerald-950/5 shadow-2xl overflow-hidden z-[9999]">
-      <div className="p-6 border-b border-emerald-950/5 flex gap-20 items-center justify-between">
+    <div className="absolute top-full mt-4 right-0 w-[550px] bg-white translate-x-[35%] rounded-3xl border border-emerald-950/5 shadow-2xl overflow-hidden z-[9999]">
+      <div className="p-6 border-b border-emerald-950/5 flex gap-12 items-center justify-between">
         <h3 className="font-bold text-lg text-emerald-950">Notifications</h3>
 
         <button
