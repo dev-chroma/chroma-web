@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "./getCurrentUser";
+import { isAdminRole } from "./roles";
 
 export async function requireAdmin() {
   const user = await getCurrentUser();
@@ -12,7 +13,7 @@ export async function requireAdmin() {
     };
   }
 
-  if (user.role !== "Admin") {
+  if (!isAdminRole(user.role)) {
     return {
       error: NextResponse.json({ message: "Access denied" }, { status: 403 }),
     };

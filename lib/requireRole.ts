@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getUserFromToken } from "@/lib/auth";
+import { isAdminRole } from "@/lib/roles";
 
 export async function requireRole(req: Request, roles: string[]) {
   const user = await getUserFromToken(req);
@@ -18,7 +19,7 @@ export async function requireRole(req: Request, roles: string[]) {
     };
   }
 
-  if (!roles.includes(user.role)) {
+  if (!roles.includes(user.role) && !(roles.includes("Admin") && isAdminRole(user.role))) {
     return {
       error: NextResponse.json(
         {

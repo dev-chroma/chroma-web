@@ -38,14 +38,14 @@ export async function GET(req: Request) {
       Comment.countDocuments(),
 
       Article.countDocuments({
-        status: "Published",
+        status: { $in: ["Published", "Paused"] },
         deletedAt: {
           $exists: false,
         },
       }),
 
       Article.countDocuments({
-        status: "Pending",
+        status: { $in: ["Pending", "Editing", "Edited"] },
         deletedAt: {
           $exists: false,
         },

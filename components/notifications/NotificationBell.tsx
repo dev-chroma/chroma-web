@@ -14,27 +14,27 @@ interface Notification {
 
 interface Props {
   userId: string;
+  notifications: Notification[];
 }
 
-export default function NotificationBell({ userId }: Props) {
+export default function NotificationBell({
+  userId,
+  notifications: initialNotifications,
+}: Props) {
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const [notifications, setNotifications] = useState(initialNotifications);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const fetchNotifications = async () => {
-    try {
-      const res = await fetch("/api/notifications", {
-        cache: "no-store",
-      });
+  const refreshNotifications = async () => {
+    const res = await fetch("/api/notifications", {
+      cache: "no-store",
+    });
 
-      if (!res.ok) return;
+    const data = await res.json();
 
-      const data = await res.json();
-
-      setNotifications(data);
-    } catch (error) {
-      console.error(error);
-    }
+    setNotifications(data);
   };
 
   useEffect(() => {
@@ -52,15 +52,6 @@ export default function NotificationBell({ userId }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchNotifications();
-
-    const interval = setInterval(fetchNotifications, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const unreadCount = notifications.filter(
     (notification) =>
       !notification.readBy?.some((id) => id.toString() === userId),
@@ -70,13 +61,14 @@ export default function NotificationBell({ userId }: Props) {
     <div ref={wrapperRef} className="relative overflow-visible">
       <button
         onClick={async () => {
-          await fetchNotifications();
+          await refreshNotifications();
           setOpen((prev) => !prev);
         }}
+        className="relative flex items-center justify-center p-2.5 rounded-full hover:bg-emerald-950/5 transition-colors"
       >
         <Bell className="w-5 h-5 text-emerald-950 hover:text-emerald-800 cursor-pointer" />
         {unreadCount > 0 && (
-          <span className="absolute -bottom-1 -right-1 w-4 h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-md">
+          <span className="absolute top-0 -right-1 w-4 h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-md">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
@@ -87,7 +79,7 @@ export default function NotificationBell({ userId }: Props) {
           notifications={notifications}
           userId={userId}
           close={() => setOpen(false)}
-          refreshNotifications={fetchNotifications}
+          refreshNotifications={refreshNotifications}
         />
       )}
     </div>

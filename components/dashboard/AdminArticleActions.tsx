@@ -1,15 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Pause, Play } from "lucide-react";
+import type { ArticleStatus } from "@/types/article";
 import { api } from "@/services/api";
 
 interface Props {
   articleId: string;
+  status?: ArticleStatus;
   onUpdated?: () => void;
+  onStatusChange?: (newStatus: ArticleStatus) => void;
 }
 
-export default function AdminArticleActions({ articleId, onUpdated }: Props) {
+export default function AdminArticleActions({ articleId, status, onUpdated, onStatusChange }: Props) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -24,6 +27,16 @@ export default function AdminArticleActions({ articleId, onUpdated }: Props) {
       onUpdated?.();
     } catch (error) {
       console.error("Failed to archive article:", error);
+    }
+  };
+
+  const handleTogglePause = async () => {
+    const newStatus = status === "Paused" ? "Published" : "Paused";
+    try {
+      await api.articles.updateStatus(articleId, newStatus);
+      onStatusChange?.(newStatus);
+    } catch (error) {
+      console.error("Failed to toggle pause status:", error);
     }
   };
 
@@ -46,6 +59,26 @@ export default function AdminArticleActions({ articleId, onUpdated }: Props) {
       >
         <Trash2 className="w-5 h-5" />
       </button>
+
+      {/* PAUSE / UNPAUSE */}
+      {status === "Published" && (
+        <button
+          onClick={handleTogglePause}
+          className="p-2 hover:bg-amber-50 text-amber-500 rounded-lg transition-colors cursor-pointer"
+          title="Pause Piece"
+        >
+          <Pause className="w-5 h-5" />
+        </button>
+      )}
+      {status === "Paused" && (
+        <button
+          onClick={handleTogglePause}
+          className="p-2 hover:bg-emerald-50 text-emerald-500 rounded-lg transition-colors cursor-pointer"
+          title="Publish Piece"
+        >
+          <Play className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ export interface RegisterPayload {
   password: string;
   school: string;
   dateOfBirth: string;
+  phone?: string;
 }
 
 export interface AuthResponse {

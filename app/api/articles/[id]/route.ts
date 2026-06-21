@@ -10,6 +10,8 @@ import Article from "@/models/Article";
 import Category from "@/models/Category";
 import { PopulatedArticle } from "@/types/article";
 import { createNotification } from "@/lib/createNotification";
+import { isAdminRole } from "@/lib/roles";
+import User from "@/models/User";
 
 const resolveCategoryId = async (categoryInput: string) => {
   if (!categoryInput) {
@@ -55,6 +57,7 @@ export async function GET(
     const article = await Article.findById(id)
       .populate("author", "firstName surname role school bio avatar")
       .populate("category", "_id name")
+      .populate("assignedEditor", "firstName surname email avatar role")
       .lean<PopulatedArticle | null>();
 
     if (!article || article.deletedAt) {
@@ -113,9 +116,12 @@ export async function PUT(
       );
     }
 
+    const isAssignedEditor = article.assignedEditor && article.assignedEditor.toString() === auth.user.id;
+
     if (
       article.author.toString() !== auth.user.id &&
-      auth.user.role !== "Admin"
+      !isAdminRole(auth.user.role) &&
+      !isAssignedEditor
     ) {
       return NextResponse.json(
         {
@@ -153,19 +159,31 @@ export async function PUT(
         thumbnail: thumbnail || featuredImage,
         featuredImage: featuredImage || thumbnail,
         readTime,
-        status: "Pending",
       },
       {
-        new: true,
+        returnDocument: "after",
       },
     );
 
-    await createNotification({
-      title: "Article Resubmitted",
-      message: `"${title}" has been submitted for review.`,
-      recipients: [auth.user.id],
-      type: "Article",
-    });
+    if (article.author.toString() === auth.user.id) {
+      const adminsAndEditors = await User.find({ role: { $in: ["Admin", "Editor"] } }, "_id");
+      const adminEditorIds = adminsAndEditors.map(u => u._id.toString());
+      await createNotification({
+        title: "Article Resubmitted",
+        message: `"${title}" has been resubmitted for review.`,
+        createdBy: auth.user.id,
+        recipients: adminEditorIds,
+        type: "Article",
+      });
+    } else {
+      await createNotification({
+        title: "Article Edited",
+        message: `Your article "${title}" was edited by a moderator.`,
+        createdBy: auth.user.id,
+        recipients: [article.author.toString()],
+        type: "Article",
+      });
+    }
 
     return NextResponse.json(updatedArticle);
   } catch (error) {
@@ -216,7 +234,7 @@ export async function DELETE(
 
     if (
       article.author.toString() !== auth.user.id &&
-      auth.user.role !== "Admin"
+      !isAdminRole(auth.user.role)
     ) {
       return NextResponse.json(
         {
@@ -236,6 +254,7 @@ export async function DELETE(
     await createNotification({
       title: "Article Archived",
       message: `"${article.title}" has been archived.`,
+      createdBy: auth.user.id,
       recipients: [article.author.toString()],
       type: "Article",
     });

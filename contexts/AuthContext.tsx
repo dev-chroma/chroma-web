@@ -32,7 +32,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setUser(userData);
       } catch {
-        localStorage.removeItem("token");
       } finally {
         setLoading(false);
       }
@@ -42,12 +41,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (token: string, userData: PublicUser) => {
-    localStorage.setItem("token", token);
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
     setUser(null);
   };
 

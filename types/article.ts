@@ -1,6 +1,11 @@
 import type { PublicUser } from "./user";
 
-export type ArticleStatus = "Draft" | "Pending" | "Published";
+export type ArticleStatus = "Draft" | "Pending" | "Editing" | "Edited" | "Published" | "Paused";
+
+export interface UpdateArticleStatusPayload {
+  status?: ArticleStatus;
+  assignedEditor?: string | null;
+}
 
 export interface ArticleCategory {
   _id: string;
@@ -25,6 +30,7 @@ export interface PublicArticle {
   likedBy?: string[];
   viewedBy?: string[];
   reads: number;
+  assignedEditor?: string | PublicUser;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -56,7 +62,7 @@ export interface ArticleQueryParams {
   page?: number;
   limit?: number;
   category?: string;
-  status?: ArticleStatus;
+  status?: ArticleStatus | "all";
   search?: string;
   author?: string;
   tags?: string[];
@@ -88,7 +94,7 @@ export interface PopulatedArticle {
   excerpt?: string;
   content: string;
   author: PublicUser | string;
-  status: "Draft" | "Pending" | "Published";
+  status: "Draft" | "Pending" | "Editing" | "Edited" | "Published" | "Paused";
   category: PopulatedCategory | string;
   thumbnail?: string;
   featuredImage?: string;

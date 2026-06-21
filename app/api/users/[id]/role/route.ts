@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
+
 import User from "@/models/User";
 import { connectDB } from "@/lib/db";
 import { getUserFromToken } from "@/lib/auth";
 import { createNotification } from "@/lib/createNotification";
+import { isAdminRole, isAssignableRole } from "@/lib/roles";
 
 export async function PATCH(
   req: Request,
@@ -17,7 +20,7 @@ export async function PATCH(
 
     const admin = await getUserFromToken(req);
 
-    if (!admin || admin.role !== "Admin") {
+    if (!admin || !isAdminRole(admin.role)) {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
@@ -25,22 +28,56 @@ export async function PATCH(
 
     const { id } = await context.params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ message: "Invalid user id" }, { status: 400 });
+    }
+
+    if (!isAssignableRole(body.role)) {
+      return NextResponse.json({ message: "Invalid role" }, { status: 400 });
+    }
+
+    const user = await User.findById(id).select("role");
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    if (
+      admin.role !== "Owner" &&
+      (user.role === "Admin" || user.role === "Owner" || body.role === "Admin")
+    ) {
+      return NextResponse.json(
+        { message: "Only the owner can manage admin roles" },
+        { status: 403 },
+      );
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
         role: body.role,
       },
       {
-        new: true,
+        returnDocument: "after",
+        runValidators: true,
       },
-    );
+    ).select("-password");
 
-    await createNotification({
-      title: "Role Updated",
-      message: `Your role has been changed to ${body.role}.`,
-      recipients: [id],
-      type: "Role",
-    });
+    if (!updatedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    try {
+      await createNotification({
+        title: "Role Updated",
+        message: `Your role has been changed to ${body.role}.`,
+        createdBy: admin.id,
+        recipients: [id],
+        type: "Role",
+      });
+    } catch (error) {
+      console.error("Failed to create role update notification", error);
+    }
 
     return NextResponse.json(updatedUser);
   } catch {

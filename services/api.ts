@@ -3,6 +3,8 @@ import {
   ArticlesResponse,
   CreateArticlePayload,
   PublicArticle,
+  UpdateArticleStatusPayload,
+  ArticleStatus,
   UpdateArticlePayload,
 } from "@/types/article";
 import { AuthResponse, LoginPayload, RegisterPayload } from "@/types/auth";
@@ -111,6 +113,19 @@ export const api = {
 
       return data;
     },
+    listByRole: async (role: UserRole): Promise<PublicUser[]> => {
+      const res = await fetch(`${BASE_URL}/users?role=${encodeURIComponent(role)}`, {
+        headers: getHeaders(),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch users");
+      }
+
+      return data;
+    },
     updateRole: async (id: string, role: UserRole): Promise<PublicUser> => {
       const res = await fetch(`${BASE_URL}/users/${id}/role`, {
         method: "PATCH",
@@ -208,12 +223,26 @@ export const api = {
         headers: getHeaders(),
       }).then((res) => res.json()),
 
-    updateStatus: (id: string, status: string) =>
-      fetch(`${BASE_URL}/articles/${id}/status`, {
+    updateStatus: async (
+      id: string,
+      status: ArticleStatus | UpdateArticleStatusPayload,
+    ) => {
+      const payload = typeof status === "string" ? { status } : status;
+
+      const res = await fetch(`${BASE_URL}/articles/${id}/status`, {
         method: "PATCH",
         headers: getHeaders(),
-        body: JSON.stringify({ status }),
-      }).then((res) => res.json()),
+        body: JSON.stringify(payload),
+      });
+
+      const response = await res.json();
+
+      if (!res.ok) {
+        throw new Error(response.message || "Failed to update article status");
+      }
+
+      return response;
+    },
 
     like: (id: string) =>
       fetch(`${BASE_URL}/articles/${id}/like`, {

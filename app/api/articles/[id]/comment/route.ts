@@ -7,6 +7,7 @@ import "@/models/User";
 
 import Article from "@/models/Article";
 import Comment from "@/models/Comment";
+import { createNotification } from "@/lib/createNotification";
 
 export async function POST(
   req: Request,
@@ -48,11 +49,21 @@ export async function POST(
       content,
     });
 
-    await Article.findByIdAndUpdate(id, {
+    const article = await Article.findByIdAndUpdate(id, {
       $inc: {
         commentsCount: 1,
       },
     });
+
+    if (article && article.author.toString() !== auth.user.id) {
+      await createNotification({
+        title: "New Comment",
+        message: `Someone commented on your article "${article.title}".`,
+        createdBy: auth.user.id,
+        recipients: [article.author.toString()],
+        type: "General",
+      });
+    }
 
     const populatedComment = await Comment.findById(comment._id)
       .populate("author", "firstName surname avatar")

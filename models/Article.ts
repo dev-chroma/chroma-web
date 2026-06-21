@@ -5,7 +5,7 @@ export interface IArticle extends Document {
   excerpt?: string;
   content: string;
   author: Types.ObjectId;
-  status: "Draft" | "Pending" | "Published";
+  status: "Draft" | "Pending" | "Editing" | "Edited" | "Published" | "Paused";
   category: Types.ObjectId;
   thumbnail?: string;
   featuredImage?: string;
@@ -18,6 +18,7 @@ export interface IArticle extends Document {
   likedBy: string[];
   viewedBy: string[];
   reads: number;
+  assignedEditor?: Types.ObjectId;
   deletedAt?: Date;
 }
 
@@ -29,7 +30,7 @@ const articleSchema = new Schema<IArticle>(
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     status: {
       type: String,
-      enum: ["Draft", "Pending", "Published"],
+      enum: ["Draft", "Pending", "Editing", "Edited", "Published", "Paused"],
       default: "Draft",
     },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
@@ -47,6 +48,7 @@ const articleSchema = new Schema<IArticle>(
       default: [],
     },
     reads: { type: Number, default: 0 },
+    assignedEditor: { type: Schema.Types.ObjectId, ref: "User" },
     deletedAt: { type: Date },
   },
   { timestamps: true },
@@ -59,4 +61,11 @@ articleSchema.index({ deletedAt: 1 }, { expireAfterSeconds: 604800 });
 articleSchema.index({ title: "text", content: "text", tags: "text" });
 
 const Article = models.Article || model<IArticle>("Article", articleSchema);
+
+if (models.Article && !models.Article.schema.path("assignedEditor")) {
+  models.Article.schema.add({
+    assignedEditor: { type: Schema.Types.ObjectId, ref: "User" }
+  });
+}
+
 export default Article;

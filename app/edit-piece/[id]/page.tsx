@@ -8,6 +8,7 @@ import "@/models/Category";
 import Article from "@/models/Article";
 import Category from "@/models/Category";
 import ArticleEditorForm from "@/components/editor/ArticleEditorForm";
+import { isEditorialRole } from "@/lib/roles";
 
 interface EditPiecePageProps {
   params: Promise<{
@@ -39,7 +40,7 @@ export default async function EditPiecePage({ params }: EditPiecePageProps) {
     redirect("/dashboard");
   }
   const isAuthor = article.author._id.toString() === user._id;
-  const isAdmin = user.role === "Admin" || user.role === "Editor";
+  const isAdmin = isEditorialRole(user.role);
   if (!isAuthor && !isAdmin) {
     redirect("/dashboard");
   }

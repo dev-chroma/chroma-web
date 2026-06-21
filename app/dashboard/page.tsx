@@ -8,6 +8,7 @@ import Article from "@/models/Article";
 import User from "@/models/User";
 import DashboardTabs from "@/components/dashboard/DashboardTabs";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { isAdminRole, isEditorialRole } from "@/lib/roles";
 
 export default async function DashboardPage() {
   await connectDB();
@@ -40,9 +41,9 @@ export default async function DashboardPage() {
         createdAt: -1,
       })
       .lean(),
-    user.role === "Admin" || user.role === "Editor"
+    isAdminRole(user.role)
       ? Article.find({
-          status: "Pending",
+          status: { $in: ["Pending", "Editing", "Edited"] },
         })
           .select("title thumbnail status author category createdAt")
           .populate("author", "firstName surname avatar")
@@ -50,16 +51,16 @@ export default async function DashboardPage() {
           .lean()
       : [],
 
-    user.role === "Admin" ? User.countDocuments() : 0,
-    user.role === "Admin" ? Article.countDocuments() : 0,
-    user.role === "Admin"
+    isAdminRole(user.role) ? User.countDocuments() : 0,
+    isAdminRole(user.role) ? Article.countDocuments() : 0,
+    isAdminRole(user.role)
       ? Article.countDocuments({
-          status: "Pending",
+          status: { $in: ["Pending", "Editing", "Edited"] },
         })
       : 0,
-    user.role === "Admin"
+    isAdminRole(user.role)
       ? Article.countDocuments({
-          status: "Published",
+          status: { $in: ["Published", "Paused"] },
         })
       : 0,
   ]);

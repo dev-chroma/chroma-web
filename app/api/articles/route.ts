@@ -5,10 +5,11 @@ import type { SortOrder } from "mongoose";
 import { connectDB } from "@/lib/db";
 import { requireRole } from "@/lib/requireRole";
 
-import "@/models/User";
+import User from "@/models/User";
 import Article from "@/models/Article";
 import Category from "@/models/Category";
 import { PopulatedArticle } from "@/types/article";
+import { createNotification } from "@/lib/createNotification";
 
 const resolveCategoryId = async (categoryInput: string) => {
   if (!categoryInput) {
@@ -55,7 +56,9 @@ export async function GET(req: Request) {
     };
 
     // STATUS
-    if (status) {
+    if (status === "all") {
+      // Do not filter by status
+    } else if (status) {
       query.status = status;
     } else {
       query.status = "Published";
@@ -117,6 +120,7 @@ export async function GET(req: Request) {
     const articles = await Article.find(query)
       .populate("author", "firstName surname email avatar")
       .populate("category", "_id name slug")
+      .populate("assignedEditor", "firstName surname email avatar role")
       .sort(sortOption)
       .skip((page - 1) * limit)
       .limit(limit)
@@ -193,6 +197,17 @@ export async function POST(req: Request) {
       readTime,
       author: auth.user.id,
       status: "Pending",
+    });
+
+    const adminsAndEditors = await User.find({ role: { $in: ["Admin", "Editor"] } }, "_id");
+    const adminEditorIds = adminsAndEditors.map(u => u._id.toString());
+
+    await createNotification({
+      title: "New Article Submission",
+      message: `A new article "${title}" is pending review.`,
+      createdBy: auth.user.id,
+      recipients: adminEditorIds,
+      type: "Approval",
     });
 
     console.log("SAVED ARTICLE:", article.readTime);

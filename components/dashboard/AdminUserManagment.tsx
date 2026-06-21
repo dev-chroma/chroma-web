@@ -10,7 +10,13 @@ import Image from "next/image";
 import CustomRoleDropdown from "../CustomRoleDropdown";
 import Link from "next/link";
 
-const AdminUserManagement = () => {
+interface AdminUserManagementProps {
+  currentUser: {
+    role: UserRole;
+  };
+}
+
+const AdminUserManagement = ({ currentUser }: AdminUserManagementProps) => {
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<PublicUser | null>(null);
@@ -135,6 +141,11 @@ const AdminUserManagement = () => {
                       <CustomRoleDropdown
                         value={u.role}
                         onChange={(role) => handleRoleUpdate(u._id, role)}
+                        canAssignAdmin={currentUser.role === "Owner"}
+                        disabled={
+                          currentUser.role !== "Owner" &&
+                          (u.role === "Admin" || u.role === "Owner")
+                        }
                         openUp={index >= users.length - 2}
                       />
                     </div>

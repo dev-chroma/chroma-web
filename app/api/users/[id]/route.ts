@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import User from "@/models/User";
+import { isAdminRole } from "@/lib/roles";
 
 export async function DELETE(
   req: Request,
@@ -14,7 +15,7 @@ export async function DELETE(
 
     const currentUser = await getCurrentUser();
 
-    if (!currentUser || currentUser.role !== "Admin") {
+    if (!currentUser || !isAdminRole(currentUser.role)) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -65,7 +66,7 @@ export async function PATCH(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    if (currentUser.role !== "Admin") {
+    if (!isAdminRole(currentUser.role)) {
       return NextResponse.json({ message: "Access denied" }, { status: 403 });
     }
 
@@ -74,7 +75,7 @@ export async function PATCH(
     const body = await req.json();
 
     const user = await User.findByIdAndUpdate(id, body, {
-      new: true,
+      returnDocument: "after",
     }).select("-password");
 
     return NextResponse.json(user);

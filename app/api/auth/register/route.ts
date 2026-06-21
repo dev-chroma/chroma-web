@@ -15,10 +15,10 @@ export async function POST(req: Request) {
       surname,
       email,
       password,
-      role,
       school,
       bio,
       dateOfBirth,
+      phone,
     } = body;
 
     const userExists = await User.findOne({
@@ -41,10 +41,11 @@ export async function POST(req: Request) {
       surname,
       email,
       password,
-      role,
+      role: "Author",
       school,
       bio,
       dateOfBirth,
+      phone,
     });
 
     const token = jwt.sign(

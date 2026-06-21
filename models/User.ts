@@ -7,13 +7,14 @@ import {
   HydratedDocument,
 } from "mongoose";
 import bcrypt from "bcryptjs";
+import { userRoles } from "@/lib/roles";
 
 export interface IUser extends Document {
   firstName: string;
   surname: string;
   email: string;
   password: string;
-  role: "Admin" | "Editor" | "Author";
+  role: "Owner" | "Admin" | "Editor" | "Author";
   school: string;
   bio?: string;
   dateOfBirth: Date;
@@ -33,7 +34,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["Admin", "Editor", "Author"],
+      enum: userRoles,
       default: "Author",
     },
     school: { type: String, required: true },
@@ -77,4 +78,9 @@ userSchema.methods.comparePassword = async function (
 };
 
 const User = models.User || model<IUser>("User", userSchema);
+
+if (models.User) {
+  models.User.schema.path("role").enum(...userRoles);
+}
+
 export default User;

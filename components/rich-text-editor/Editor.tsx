@@ -5,8 +5,11 @@ import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Menubar from "./Menubar";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function RichTextEditor({ field }: { field: any }) {
+export function RichTextEditor({
+  field,
+}: {
+  field: { value: string; onChange: (value: string) => void };
+}) {
   console.log("Editor mounted");
   const editor = useEditor({
     immediatelyRender: false,

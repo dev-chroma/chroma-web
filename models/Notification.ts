@@ -1,16 +1,35 @@
-// models/Notification.ts
+import { Schema, model, models, Document, Types } from "mongoose";
 
-import { Schema, model, models } from "mongoose";
+export type NotificationType =
+  | "General"
+  | "Approval"
+  | "Rejection"
+  | "Role"
+  | "Profile"
+  | "Article"
+  | "System"
+  | "Warning";
 
 export interface INotification extends Document {
   title: string;
   message: string;
-  type: "General" | "Article" | "System" | "Warning";
-  createdBy: Schema.Types.ObjectId;
-  recipients: Schema.Types.ObjectId[];
-  readBy: Schema.Types.ObjectId[];
+  type: NotificationType;
+  createdBy: Types.ObjectId;
+  recipients: Types.ObjectId[];
+  readBy: Types.ObjectId[];
   isGlobal: boolean;
 }
+
+const notificationTypes: NotificationType[] = [
+  "General",
+  "Approval",
+  "Rejection",
+  "Role",
+  "Profile",
+  "Article",
+  "System",
+  "Warning",
+];
 
 const NotificationSchema = new Schema(
   {
@@ -26,7 +45,7 @@ const NotificationSchema = new Schema(
 
     type: {
       type: String,
-      enum: ["General", "Article", "System", "Warning"],
+      enum: notificationTypes,
       default: "General",
     },
 
@@ -59,6 +78,10 @@ const NotificationSchema = new Schema(
     timestamps: true,
   },
 );
+
+if (models.Notification) {
+  models.Notification.schema.path("type").enum(...notificationTypes);
+}
 
 const Notification =
   models.Notification ||

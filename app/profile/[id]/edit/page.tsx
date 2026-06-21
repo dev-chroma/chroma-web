@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { connectDB } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import User from "@/models/User";
+import { isAdminRole } from "@/lib/roles";
 
 import EditProfileForm from "@/components/profile/EditProfileForm";
 
@@ -18,7 +19,7 @@ export default async function AdminEditProfilePage({ params }: Props) {
     redirect("/auth");
   }
 
-  if (currentUser.role !== "Admin") {
+  if (!isAdminRole(currentUser.role)) {
     redirect(`/profile/${currentUser._id}`);
   }
 

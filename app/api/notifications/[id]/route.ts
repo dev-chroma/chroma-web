@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { connectDB } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { isAdminRole } from "@/lib/roles";
 
 import Notification from "@/models/Notification";
 
@@ -18,7 +19,7 @@ export async function DELETE(
 
     const user = await getCurrentUser();
 
-    if (!user || user.role !== "Admin") {
+    if (!user || !isAdminRole(user.role)) {
       return NextResponse.json({ message: "Access denied" }, { status: 403 });
     }
 

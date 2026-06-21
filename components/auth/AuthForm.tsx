@@ -12,7 +12,6 @@ import {
   School,
   User,
 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/services/api";
 
 interface FormDataState {
@@ -27,7 +26,6 @@ interface FormDataState {
 
 export default function AuthForm() {
   const router = useRouter();
-  const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -54,8 +52,8 @@ export default function AuthForm() {
         });
 
         if (response.token && response.user) {
-          login(response.token, response.user);
           router.push("/dashboard");
+          router.refresh();
         } else {
           setError(response.message || "Login failed");
         }
@@ -63,9 +61,8 @@ export default function AuthForm() {
         const response = await api.auth.register(formData);
 
         if (response.token && response.user) {
-          login(response.token, response.user);
-
           router.push("/dashboard");
+          router.refresh();
         } else {
           setError(response.message || "Registration failed");
         }
