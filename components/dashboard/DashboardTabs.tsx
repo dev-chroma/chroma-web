@@ -34,26 +34,6 @@ const getStatusChipClass = (status: PublicArticle["status"]) => {
   }
 
   if (status === "Editing") {
-    return "bg-purple-400/90 text-purple-950";
-  }
-
-  if (status === "Edited") {
-    return "bg-cyan-400/90 text-cyan-950";
-  }
-
-  return "bg-amber-100 text-amber-700";
-};
-
-const getStatusDotClass = (status: PublicArticle["status"]) => {
-  if (status === "Published") {
-    return "bg-emerald-100 text-emerald-700";
-  }
-
-  if (status === "Paused") {
-    return "bg-blue-100 text-blue-700";
-  }
-
-  if (status === "Editing") {
     return "bg-purple-100 text-purple-700";
   }
 
