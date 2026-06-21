@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { CheckCheck } from "lucide-react";
-import { useEffect, useRef } from "react";
 
 interface Notification {
   _id: string;
@@ -56,7 +55,7 @@ export default function NotificationDropdown({
   );
 
   return (
-    <div className="absolute top-full mt-4 right-0 w-120 bg-white translate-x-[35%] rounded-3xl border border-emerald-950/5 shadow-2xl overflow-hidden z-[9999]">
+    <div className="absolute top-full mt-4 right-0 w-80 bg-white rounded-3xl border border-emerald-950/5 shadow-2xl overflow-hidden z-[9999]">
       <div className="p-6 border-b border-emerald-950/5 flex gap-8 items-center justify-between">
         <h3 className="font-bold text-lg text-emerald-950">Notifications</h3>
 
