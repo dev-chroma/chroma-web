@@ -432,16 +432,9 @@ export default function DashboardTabs({
 
                           <td className="px-12 py-10">
                             <div className="flex items-center justify-center gap-3">
-                              <div
-                                className={`w-2.5 h-2.5 rounded-full ${getStatusDotClass(article.status)} ${article.status === "Editing" || article.status === "Edited" ? "animate-pulse" : ""}`}
-                              />
-
                               <span
                                 className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${getStatusChipClass(article.status)}`}
                               >
-                                <span
-                                  className={`w-1.5 h-1.5 rounded-full ${getStatusDotClass(article.status)}`}
-                                />
                                 {article.status}
                               </span>
                             </div>
