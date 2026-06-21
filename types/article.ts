@@ -18,6 +18,7 @@ export interface PublicArticle {
   excerpt?: string;
   content: string;
   author: PublicUser;
+  enrolledBy?: string[];
   status: ArticleStatus;
   category: ArticleCategory;
   thumbnail?: string;
@@ -94,6 +95,7 @@ export interface PopulatedArticle {
   excerpt?: string;
   content: string;
   author: PublicUser | string;
+  enrolledBy?: string[];
   status: "Draft" | "Pending" | "Editing" | "Edited" | "Published" | "Paused";
   category: PopulatedCategory | string;
   thumbnail?: string;

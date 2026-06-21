@@ -8,7 +8,7 @@ import Article from "@/models/Article";
 import User from "@/models/User";
 import DashboardTabs from "@/components/dashboard/DashboardTabs";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import { isAdminRole, isEditorialRole } from "@/lib/roles";
+import { isAdminRole } from "@/lib/roles";
 
 export default async function DashboardPage() {
   await connectDB();

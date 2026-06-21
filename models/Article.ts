@@ -5,6 +5,7 @@ export interface IArticle extends Document {
   excerpt?: string;
   content: string;
   author: Types.ObjectId;
+  enrolledBy: Types.ObjectId[];
   status: "Draft" | "Pending" | "Editing" | "Edited" | "Published" | "Paused";
   category: Types.ObjectId;
   thumbnail?: string;
@@ -28,6 +29,7 @@ const articleSchema = new Schema<IArticle>(
     excerpt: { type: String },
     content: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    enrolledBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
     status: {
       type: String,
       enum: ["Draft", "Pending", "Editing", "Edited", "Published", "Paused"],

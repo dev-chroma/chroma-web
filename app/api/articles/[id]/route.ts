@@ -10,6 +10,7 @@ import Article from "@/models/Article";
 import Category from "@/models/Category";
 import { PopulatedArticle } from "@/types/article";
 import { createNotification } from "@/lib/createNotification";
+import { notifyArticleAudience } from "@/lib/articleNotifications";
 import { isAdminRole } from "@/lib/roles";
 import User from "@/models/User";
 
@@ -175,15 +176,15 @@ export async function PUT(
         recipients: adminEditorIds,
         type: "Article",
       });
-    } else {
-      await createNotification({
-        title: "Article Edited",
-        message: `Your article "${title}" was edited by a moderator.`,
-        createdBy: auth.user.id,
-        recipients: [article.author.toString()],
-        type: "Article",
-      });
     }
+
+    await notifyArticleAudience({
+      article,
+      title: "Article Updated",
+      message: `"${title}" was updated.`,
+      createdBy: auth.user.id,
+      excludeRecipients: [auth.user.id],
+    });
 
     return NextResponse.json(updatedArticle);
   } catch (error) {
@@ -251,12 +252,12 @@ export async function DELETE(
       status: "Draft",
     });
 
-    await createNotification({
+    await notifyArticleAudience({
+      article,
       title: "Article Archived",
-      message: `"${article.title}" has been archived.`,
+      message: `"${article.title}" was archived.`,
       createdBy: auth.user.id,
-      recipients: [article.author.toString()],
-      type: "Article",
+      excludeRecipients: [auth.user.id],
     });
 
     return NextResponse.json({

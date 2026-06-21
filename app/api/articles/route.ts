@@ -196,6 +196,7 @@ export async function POST(req: Request) {
       featuredImage: featuredImage || thumbnail,
       readTime,
       author: auth.user.id,
+      enrolledBy: [auth.user.id],
       status: "Pending",
     });
 

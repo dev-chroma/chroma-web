@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/requireAuth";
 
 import "@/models/User";
-import { createNotification } from "@/lib/createNotification";
+import { notifyArticleAudience } from "@/lib/articleNotifications";
 
 import Article from "@/models/Article";
 
@@ -72,15 +72,13 @@ export async function POST(
 
     await article.save();
 
-    if (article.author.toString() !== auth.user.id) {
-      await createNotification({
-        title: "New Like",
-        message: `Someone liked your article "${article.title}".`,
-        createdBy: auth.user.id,
-        recipients: [article.author.toString()],
-        type: "General",
-      });
-    }
+    await notifyArticleAudience({
+      article,
+      title: "New Like",
+      message: `A new like was added to "${article.title}".`,
+      createdBy: auth.user.id,
+      excludeRecipients: [auth.user.id],
+    });
 
     return NextResponse.json({
       liked: true,

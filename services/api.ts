@@ -256,6 +256,21 @@ export const api = {
         headers: getHeaders(),
       }).then((res) => res.json()),
 
+    enroll: async (id: string): Promise<{ enrolled: boolean }> => {
+      const res = await fetch(`${BASE_URL}/articles/${id}/enroll`, {
+        method: "POST",
+        headers: getHeaders(),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to update enrollment");
+      }
+
+      return data;
+    },
+
     addComment: (id: string, data: { content: string }) =>
       fetch(`${BASE_URL}/articles/${id}/comment`, {
         method: "POST",

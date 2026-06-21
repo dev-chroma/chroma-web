@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import { requireRole } from "@/lib/requireRole";
 import { createNotification } from "@/lib/createNotification";
+import {
+  getArticleAuthorName,
+  notifyArticleAudience,
+} from "@/lib/articleNotifications";
 import type { ArticleStatus } from "@/types/article";
 
 import Article from "@/models/Article";
@@ -103,20 +107,33 @@ export async function PATCH(
 
     if (status && status !== originalArticle.status) {
       if (status === "Published") {
+        const authorName = getArticleAuthorName(article);
+
         await createNotification({
           title: "Article Published",
-          message: `Congratulations! Your article "${article.title}" is now live.`,
+          message: `"${article.title}" by ${authorName} is now live.`,
           createdBy: auth.user.id,
-          recipients: [article.author._id.toString()],
+          recipients: article.enrolledBy?.length
+            ? article.enrolledBy.map((id : string) => id.toString())
+            : [article.author._id.toString()],
+          isGlobal: true,
           type: "Article",
         });
       } else if (status === "Draft") {
-        await createNotification({
+        await notifyArticleAudience({
           title: "Article Needs Revision",
-          message: `Your article "${article.title}" was moved back to Draft.`,
+          article,
+          message: `"${article.title}" was moved back to Draft.`,
           createdBy: auth.user.id,
-          recipients: [article.author._id.toString()],
-          type: "Article",
+          excludeRecipients: [auth.user.id],
+        });
+      } else {
+        await notifyArticleAudience({
+          article,
+          title: "Article Status Updated",
+          message: `"${article.title}" changed to ${status}.`,
+          createdBy: auth.user.id,
+          excludeRecipients: [auth.user.id],
         });
       }
     }
@@ -134,6 +151,21 @@ export async function PATCH(
           type: "Article",
         });
       }
+    }
+
+    if (
+      assignedEditor !== undefined &&
+      status !== undefined &&
+      status === originalArticle.status &&
+      String(assignedEditor || "") !== String(originalArticle.assignedEditor || "")
+    ) {
+      await notifyArticleAudience({
+        article,
+        title: "Article Assignment Updated",
+        message: `"${article.title}" was assigned to a new editor.`,
+        createdBy: auth.user.id,
+        excludeRecipients: [auth.user.id],
+      });
     }
 
     return NextResponse.json(article);

@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/db";
 
 import Article from "@/models/Article";
 import { requireAdmin } from "@/lib/requireAdmin";
-import { createNotification } from "@/lib/createNotification";
+import { notifyArticleAudience } from "@/lib/articleNotifications";
 
 export async function PATCH(
   req: Request,
@@ -37,6 +37,16 @@ export async function PATCH(
         new: true,
       },
     );
+
+    if (article) {
+      await notifyArticleAudience({
+        article,
+        title: "Article Recovered",
+        message: `"${article.title}" was recovered and sent back for review.`,
+        createdBy: auth.user.id,
+        excludeRecipients: [auth.user.id],
+      });
+    }
 
     return NextResponse.json(article);
   } catch (error) {

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 import { connectDB } from "@/lib/db";
 import { requireAuth } from "@/lib/requireAuth";
-import { notifyArticleAudience } from "@/lib/articleNotifications";
 
 import Article from "@/models/Article";
 
@@ -17,15 +16,13 @@ export async function POST(
   try {
     await connectDB();
 
-    const { id } = await context.params;
-
     const auth = await requireAuth(req);
 
     if (auth.error) {
       return auth.error;
     }
 
-    const userId = auth.user.id;
+    const { id } = await context.params;
 
     const article = await Article.findById(id);
 
@@ -40,51 +37,41 @@ export async function POST(
       );
     }
 
-    const isBookmarked = article.bookmarkedBy.includes(userId);
+    if (!article.enrolledBy) {
+      article.enrolledBy = [];
+    }
 
-    if (isBookmarked) {
+    const isEnrolled = article.enrolledBy.some(
+      (userId: string) => userId.toString() === auth.user.id,
+    );
+
+    if (isEnrolled) {
       await Article.findByIdAndUpdate(id, {
         $pull: {
-          bookmarkedBy: userId,
-        },
-        $inc: {
-          bookmarksCount: -1,
+          enrolledBy: auth.user.id,
         },
       });
 
       return NextResponse.json({
-        message: "Bookmark removed",
-        bookmarked: false,
+        enrolled: false,
       });
     }
 
     await Article.findByIdAndUpdate(id, {
-      $push: {
-        bookmarkedBy: userId,
+      $addToSet: {
+        enrolledBy: auth.user.id,
       },
-      $inc: {
-        bookmarksCount: 1,
-      },
-    });
-
-    await notifyArticleAudience({
-      article,
-      title: "New Bookmark",
-      message: `"${article.title}" was bookmarked.`,
-      createdBy: auth.user.id,
-      excludeRecipients: [auth.user.id],
     });
 
     return NextResponse.json({
-      message: "Article bookmarked",
-      bookmarked: true,
+      enrolled: true,
     });
   } catch (error) {
     console.error(error);
 
     return NextResponse.json(
       {
-        message: "Failed to bookmark article",
+        message: "Failed to update enrollment",
       },
       {
         status: 500,

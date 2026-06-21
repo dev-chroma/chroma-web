@@ -8,7 +8,7 @@ import "@/models/Category";
 import Article from "@/models/Article";
 import { requireAdmin } from "@/lib/requireAdmin";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     await connectDB();
 

@@ -7,7 +7,7 @@ import "@/models/User";
 
 import Article from "@/models/Article";
 import Comment from "@/models/Comment";
-import { createNotification } from "@/lib/createNotification";
+import { notifyArticleAudience } from "@/lib/articleNotifications";
 
 export async function POST(
   req: Request,
@@ -55,13 +55,13 @@ export async function POST(
       },
     });
 
-    if (article && article.author.toString() !== auth.user.id) {
-      await createNotification({
+    if (article) {
+      await notifyArticleAudience({
+        article,
         title: "New Comment",
-        message: `Someone commented on your article "${article.title}".`,
+        message: `A new comment was added to "${article.title}".`,
         createdBy: auth.user.id,
-        recipients: [article.author.toString()],
-        type: "General",
+        excludeRecipients: [auth.user.id],
       });
     }
 

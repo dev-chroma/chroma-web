@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, Heart, Share2 } from "lucide-react";
+import { Bell, Eye, Heart, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,11 +17,17 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
   const [likes, setLikes] = useState(article.likes || 0);
   const serverLiked =
     article.likedBy?.some((id) => String(id) === String(user?._id)) || false;
+  const serverEnrolled =
+    article.enrolledBy?.some((id) => String(id) === String(user?._id)) || false;
 
   const [optimisticLiked, setOptimisticLiked] = useState<boolean | null>(null);
+  const [optimisticEnrolled, setOptimisticEnrolled] = useState<boolean | null>(null);
 
   const isLiked = optimisticLiked === null ? serverLiked : optimisticLiked;
+  const isEnrolled =
+    optimisticEnrolled === null ? serverEnrolled : optimisticEnrolled;
   const [isLiking, setIsLiking] = useState(false);
+  const [isTogglingEnrollment, setIsTogglingEnrollment] = useState(false);
 
   console.log("USER ID:", user?._id);
   console.log("LIKED BY:", article.likedBy);
@@ -54,6 +60,30 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
     }
   };
 
+  const handleEnroll = async () => {
+    if (isTogglingEnrollment) {
+      return;
+    }
+
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+
+    try {
+      setIsTogglingEnrollment(true);
+      const previousEnrolled = isEnrolled;
+
+      setOptimisticEnrolled(!previousEnrolled);
+      const updated = await api.articles.enroll(article._id);
+      setOptimisticEnrolled(updated.enrolled);
+    } catch (error) {
+      console.error("Failed to update enrollment:", error);
+    } finally {
+      setIsTogglingEnrollment(false);
+    }
+  };
+
   const handleShare = async () => {
     try {
       if (navigator.share) {
@@ -74,6 +104,20 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
   return (
     <div className="mt-20 pt-10 border-t border-emerald-950/5 flex flex-wrap items-center justify-between gap-6">
       <div className="flex items-center gap-4">
+        <button
+          onClick={handleEnroll}
+          disabled={isTogglingEnrollment}
+          className={`flex items-center gap-3 px-8 py-4 rounded-full font-bold text-xs tracking-widest border transition-all ${
+            isEnrolled
+              ? "bg-emerald-950 text-white border-emerald-950"
+              : "bg-white text-emerald-950 border-emerald-950/10"
+          }`}
+        >
+          <Bell className={`w-5 h-5 ${isEnrolled ? "fill-current" : ""}`} />
+
+          {isEnrolled ? "Subscribed" : "Subscribe"}
+        </button>
+
         {/* LIKE */}
 
         <button
