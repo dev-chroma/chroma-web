@@ -5,7 +5,7 @@ import { connectDB } from "@/lib/db";
 import Article from "@/models/Article";
 
 export async function POST(
-  req: Request,
+  _req: Request,
   context: {
     params: Promise<{
       id: string;
@@ -17,7 +17,20 @@ export async function POST(
 
     const { id } = await context.params;
 
-    const article = await Article.findById(id);
+    const article = await Article.findByIdAndUpdate(
+      id,
+      {
+        $inc: {
+          reads: 1,
+        },
+      },
+      {
+        new: true,
+        projection: {
+          reads: 1,
+        },
+      },
+    );
 
     if (!article) {
       return NextResponse.json(
@@ -28,22 +41,6 @@ export async function POST(
           status: 404,
         },
       );
-    }
-
-    if (!article.viewedBy) {
-      article.viewedBy = [];
-    }
-
-    const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "anonymous";
-
-    const alreadyViewed = article.viewedBy.includes(ip);
-
-    if (!alreadyViewed) {
-      article.reads += 1;
-
-      article.viewedBy.push(ip);
-
-      await article.save();
     }
 
     return NextResponse.json({

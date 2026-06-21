@@ -13,6 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { api } from "@/services/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface FormDataState {
   firstName: string;
@@ -26,6 +27,7 @@ interface FormDataState {
 
 export default function AuthForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -52,6 +54,12 @@ export default function AuthForm() {
         });
 
         if (response.token && response.user) {
+          const authUser = response.user as typeof response.user & { id?: string };
+
+          login(response.token, {
+            ...authUser,
+            _id: authUser._id || authUser.id || "",
+          });
           router.push("/dashboard");
           router.refresh();
         } else {
@@ -61,6 +69,12 @@ export default function AuthForm() {
         const response = await api.auth.register(formData);
 
         if (response.token && response.user) {
+          const authUser = response.user as typeof response.user & { id?: string };
+
+          login(response.token, {
+            ...authUser,
+            _id: authUser._id || authUser.id || "",
+          });
           router.push("/dashboard");
           router.refresh();
         } else {

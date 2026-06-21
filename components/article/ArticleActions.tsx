@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bell, Eye, Heart, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
@@ -15,6 +15,7 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
   const router = useRouter();
   const { user } = useAuth();
   const [likes, setLikes] = useState(article.likes || 0);
+  const [reads, setReads] = useState(article.reads || 0);
   const serverLiked =
     article.likedBy?.some((id) => String(id) === String(user?._id)) || false;
   const serverEnrolled =
@@ -28,6 +29,28 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
     optimisticEnrolled === null ? serverEnrolled : optimisticEnrolled;
   const [isLiking, setIsLiking] = useState(false);
   const [isTogglingEnrollment, setIsTogglingEnrollment] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const incrementViews = async () => {
+      try {
+        const updated = await api.articles.incrementViews(article._id);
+
+        if (!cancelled && updated?.reads !== undefined) {
+          setReads(updated.reads);
+        }
+      } catch (error) {
+        console.error("Failed to update views:", error);
+      }
+    };
+
+    void incrementViews();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [article._id]);
 
   console.log("USER ID:", user?._id);
   console.log("LIKED BY:", article.likedBy);
@@ -139,7 +162,7 @@ const ArticleActions = ({ article }: ArticleActionsProps) => {
         <div className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-xs tracking-widest border bg-white text-emerald-950 border-emerald-950/10">
           <Eye className="w-5 h-5 text-emerald-950/40" />
 
-          {article.reads || 0}
+          {reads}
         </div>
       </div>
 

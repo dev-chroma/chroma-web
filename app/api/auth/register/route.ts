@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       },
     );
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         token,
         user: {
@@ -74,6 +74,16 @@ export async function POST(req: Request) {
         status: 201,
       },
     );
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
   } catch (error) {
     console.error(error);
 
